@@ -9,9 +9,12 @@ import React, { useState } from 'react';
 import { Text, View, Button, StyleSheet, TextInput, TouchableOpacity, Image,Alert } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
+import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [errors, setErrors] = useState({});
@@ -22,7 +25,7 @@ const LoginScreen = () => {
     const minLength = 6; 
     return password.length >= minLength;
   };
-  const handleRegister = () => {
+  const handleRegister = async() => {
     setErrors({});
     let valid = true;
     let Errors = {};
@@ -48,7 +51,30 @@ const LoginScreen = () => {
       if(valid)
         {
 
-          Alert.alert('Success', 'Login successful!');
+          axios({
+            method: 'post',
+            url: 'https://project.theposgeniee.com/api/Login',
+            data: {
+              name:name,
+             email:email,
+             password:password,
+            }
+          }).then((res)=>{
+           console.log("res+++",res.data)
+          const name=res.data.user.name;
+             if(name){
+              AsyncStorage.setItem('name', name);
+              console.log(name)
+              Alert.alert('Login Successfully', 'name  found in the response.');
+              AsyncStorage.setItem('isLoggedIn', 'true');
+              navigation.replace('Profile');
+             }else{
+              Alert.alert('Login Error', 'name not found in the response.');
+             }
+          
+          }).catch((error)=>{
+            console.log("error raised",error)
+          });
         } else {
           // Set errors
           setErrors(Errors);
@@ -57,13 +83,12 @@ const LoginScreen = () => {
   };
 
   return (
-    
+       
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.textstyle} >Already have an account!</Text>
-          <Image style={styles.image} source={require("./assest/images.png")} />
+          <Image style={styles.image} source={require("../assests/logo.png")} />
         </View>
-      
         <LinearGradient style={styles.main}
     colors={['#191645', '#43CBAC']}
       locations={[0.33, 1.5]}
@@ -111,9 +136,10 @@ const LoginScreen = () => {
             </TouchableOpacity>
           </View>
          
+    
           </LinearGradient>
        <Text style={{ fontSize: 16, alignSelf: 'center', color: "#191645", }}>OR</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.navigate('Signup')}>
           <Text style={[styles.footer ,styles.Text]}>New User?<Text style={styles.footerText}> Sign Up</Text>
           </Text>
         </TouchableOpacity>

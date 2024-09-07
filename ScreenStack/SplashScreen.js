@@ -10,7 +10,7 @@ const SplashScreen = ({navigation}) => {
     //angle={180}>
     setTimeout(()=>
     {
-navigation.replace('Home');
+navigation.replace('Tab');
     },3000);
     return (
     <View style={styles.container}>
