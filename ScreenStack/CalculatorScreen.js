@@ -1,8 +1,9 @@
 import React,{useState} from "react";
 import{View,Text, StyleSheet,TextInput,TouchableOpacity, Modal,Image}from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-const CalculatorScreen=({navigation})=>
+const CalculatorScreen=({navigation,route})=>
 {
+  const { property } = route.params;
   const [showModal,setshowModal]=useState(false)
  const [salary, setSalary] = useState();
  const [years, setYears] = useState();
@@ -11,6 +12,7 @@ const CalculatorScreen=({navigation})=>
  
 
   const calculateYears = () => {
+    
     const totalYears = parseFloat(years);
     const totalInvestmentNeeded = parseFloat(propertyPrice);
     const yearlyInvestment = totalInvestmentNeeded / totalYears;
@@ -47,7 +49,7 @@ const CalculatorScreen=({navigation})=>
               placeholderTextColor="#CAD0CF"
               selectionColor={'#191645'}
               value={years}
-        onChangeText={(text)=>setYears(text)}
+             onChangeText={(text)=>setYears(text)}
               autoCapitalize='none'
               autoCorrect={false}
             />
@@ -59,8 +61,9 @@ const CalculatorScreen=({navigation})=>
             <TextInput
               style={styles.textInput}
               keyboardType="numeric"
+              placeholder={property.price}
               selectionColor={'#191645'}
-              placeholderTextColor="#CAD0CF"
+              placeholderTextColor="#191645"
               value={propertyPrice}
               onChangeText={(text)=>setPropertyPrice(text)}
               autoCapitalize='none'

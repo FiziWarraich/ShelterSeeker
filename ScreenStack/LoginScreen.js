@@ -53,7 +53,7 @@ const LoginScreen = ({navigation}) => {
 
           axios({
             method: 'post',
-            url: 'https://project.theposgeniee.com/api/Login',
+            url: 'https://shelterseeker.projectflux.online/api/Login',
             data: {
               name:name,
              email:email,

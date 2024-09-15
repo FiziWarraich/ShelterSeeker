@@ -63,7 +63,7 @@ const SignupScreen = ({navigation}) => {
 
           axios({
             method: 'post',
-            url: 'https://project.theposgeniee.com/api/Register',
+            url: 'https://shelterseeker.projectflux.online/api/Register',
             data: {
              name:name,
              email:email,

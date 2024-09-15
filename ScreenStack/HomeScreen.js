@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
    View, Text, StyleSheet, Button, ImageBackground, Image, SafeAreaView, TouchableOpacity
-   , TextInput, ScrollView, FlatList,
+   , TextInput, ScrollView, FlatList,Alert,
    TextComponent
 } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { SearchBar } from "react-native-screens";
 import { useNavigation } from "@react-navigation/native";
 import axios from 'axios';
+import HomeCards from "../Components/HomeCards";
 
 const HomeScreen = ({ navigation }) => {
    const [location, setLocation] = useState([]);
@@ -15,42 +16,39 @@ const HomeScreen = ({ navigation }) => {
    const [types, setTypes] = useState(null);
    const [searchText, setSearchText] = useState("");
    const [filterData, setFilterData] = useState([]);
+   const [loading, setLoading] = useState(true);
+ 
+   // Function to fetch post types from API
+   
 
-   useEffect(() => {
+   
       const fetchTypes = async () => {
          try {
-            const response = await axios.get('https://project.theposgeniee.com/api/post'); // API URL for Buy/Rent options
+            const response = await axios.get('https://shelterseeker.projectflux.online/api/post'); // API URL for Buy/Rent options
             setPost(response.data.Post); // assuming response contains { types: ['buy', 'rent'] }
-            console.log(response.data.Post)
+            console.log( response.data.Post);
          } catch (error) {
             console.log('Error fetching types:', error);
          }
       };
-      const fetchLocations = async () => {
-         try {
-            const response = await axios.get('https://project.theposgeniee.com/api/location');
-            setLocation(response.data.location); // Correctly setting location state
-            console.log(response.data.location);
-         } catch (error) {
-            console.log('Error fetching locations:', error);
-         }
-      };
+    
 
-
+      useEffect(() => {
       fetchTypes();
-      fetchLocations();
+     
    }, []);
    // Replace this with your actual API call
    const searchLocation = async (text) => {
       setSearchText(text);
-
+   
       if (text.length > 0) {
-         const url = `https://project.theposgeniee.com/api/location?q=${text}`;
-
+         const url = `https://shelterseeker.projectflux.online/api/location?q=${text}`;
+   
          try {
             const result = await fetch(url);
             const data = await result.json();
             if (data && data.location) {
+               setLocation(data.location); // Update location state with fetched data
                const filtered = data.location.filter((item) => {
                   const itemData = item.property_location
                      ? item.property_location.toUpperCase()
@@ -58,20 +56,21 @@ const HomeScreen = ({ navigation }) => {
                   const textData = text.toUpperCase();
                   return itemData.startsWith(textData);
                });
-
+   
                setFilterData(filtered); // Set filtered locations
             }
          } catch (error) {
             console.log("Error fetching locations:", error);
          }
       } else {
-         setLocation([]);
-         setFilterData([]);
+         setLocation([]); // Clear location state if search text is empty
+         setFilterData([]); // Clear filtered locations
       }
    };
+   
    const handleLocationSelect = (selectedLocation) => {
       // Handle location selection
-      setSearchText(selectedLocation.property_location); // Set the selected location text in search bar
+      setSearchText(selectedLocation.property_location);
       setFilterData([]); // Clear filtered locations after selection
    };
 
@@ -80,30 +79,40 @@ const HomeScreen = ({ navigation }) => {
          style={styles.location}
          onPress={() => handleLocationSelect(item)}
       >
-         <Text style={styles.locationtext}>{item.property_location.toUpperCase()}</Text>
+         <Text style={styles.locationtext}>{item.property_location}</Text>
       </TouchableOpacity>
    );
 
    const handleTypeSelect = (selectedPost) => {
       setTypes(selectedPost); // Set the selected type (Buy/Rent)
+      setSearchText(""); // Clear search text when type changes
+      setLocation([]);
+      
    };
    const handleSearch = () => {
       if (types && searchText) {
-         console.log(searchText);
-         // Navigate to PropertyListScreen with selected Post and location
-         const selectedPost = Post.find(item => item.property_post === types); // Get the selected Post object
-         const selectedLocation = location.find(item => item.property_location === searchText); // Get the selected location object
-
-         if (selectedPost && selectedLocation) {
-            navigation.navigate('PropertyList', {
-               post_id: selectedPost.id, // Passing post ID
-               location_id: selectedLocation.id // Passing location ID
-            });
-         } else {
-            alert('Please select valid options!');
-         }
+        const selectedPost = Post.find((item) => item.property_post=== types);
+        const selectedLocation = location.find((item) => item.property_location === searchText);
+    
+        if (selectedPost && selectedLocation) {
+          navigation.navigate('PropertyList', {
+            post_id: selectedPost.id,
+            location_id: selectedLocation.id,
+          });
+        } else {
+          Alert.alert('No matching properties found!');
+          console.log(location);
+          console.log(searchText)
+          console.log(Post)
+        }
+      } else {
+        Alert.alert('Please select valid options!');
       }
-   };
+    };
+    
+  
+    
+
    return (
       <ScrollView>
          <View style={styles.container}>
@@ -116,7 +125,7 @@ const HomeScreen = ({ navigation }) => {
                      key={item.id}
                      style={[
                         styles.btn1,
-                        { backgroundColor: types === item.property_post ? "#FFFFFF" : "#d4d4d4" },
+                        { backgroundColor: types === item.property_post? "#FFFFFF" : "#d4d4d4" },
                      ]} onPress={() => handleTypeSelect(item.property_post)}
 
                   >
@@ -173,28 +182,8 @@ const HomeScreen = ({ navigation }) => {
 
 
          </View>
-         <View style={styles.card}>
-            <Image style={styles.redlogo} source={require("../assests/redlogo.png")} />
-            <View>
-               <Text style={styles.redlogotext}>Buy a property</Text>
-               <Text style={styles.redlogotext1}>Don't wait buy a property.</Text>
-               <Text style={styles.redlogotext1}>"BUY LAND AND WAIT'</Text>
-               <TouchableOpacity style={styles.redlogobtn}>
-                  <Text style={styles.redlogotextbtn}>Buy a house</Text>
-               </TouchableOpacity>
-            </View>
-         </View>
-         <View style={styles.card}>
-
-            <View>
-               <Text style={styles.greylogotext}>Rent a property</Text>
-               <Text style={styles.greylogotext1}>"Home is the nicest word there is."</Text>
-               <TouchableOpacity style={styles.greylogobtn} onPress={() => navigation.navigate('BuyListing')}>
-                  <Text style={styles.greylogotextbtn}>Find rentals</Text>
-               </TouchableOpacity>
-            </View>
-            <Image style={styles.greylogo} source={require("../assests/greylogo.png")} />
-         </View>
+         <HomeCards/>
+         
       </ScrollView>
 
    );

@@ -2,11 +2,12 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView ,FlatList} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import GoogleMapView from '../Components/GoogleMapView';
 
 const PropertyDetailScreen = ({ route }) => {
   const { property } = route.params;
   const images = property.Images;
-
+console.log(property.location_latitude)
   return (
     <ScrollView style={styles.container}>
        <FlatList
@@ -17,12 +18,13 @@ const PropertyDetailScreen = ({ route }) => {
         renderItem={({ item }) => (
             <View style={styles.imageContainer}>
             <Image
-              source={{ uri: `https://project.theposgeniee.com/api/propertiesadminCategory/${item.images}` }}
+              source={{ uri: `https://shelterseeker.projectflux.online/api/propertiesadminCategory/${item.images}` }}
               style={styles.image}
-            />
 
+            />
           </View>
         )}
+        
       />
       <View style={styles.detailsContainer}>
             <View style={{flexDirection:'row'}}>
@@ -38,6 +40,13 @@ const PropertyDetailScreen = ({ route }) => {
               <Text style={styles.description}>
                 {property.description || 'No description available'}
               </Text>
+            </View>
+            <View style={{height:500}}>
+              <GoogleMapView
+               latitude={parseFloat(property.location_latitude)}
+               longitude={parseFloat(property.location_longitude)}
+               
+              />
             </View>
     </ScrollView>
   );
@@ -61,6 +70,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 8,
     color: '#000',
+  },
+  imageContainer:
+  {
+  height:'100%',
+  width:'90%'
   },
   type: {
     right:-150,

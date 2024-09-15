@@ -5,7 +5,7 @@ const FavouriteScreen=({navigation})=>
 {
     return(
         <View style={styles.container}>
-        <GoogleMapView/>
+        
         </View>
     )
 };

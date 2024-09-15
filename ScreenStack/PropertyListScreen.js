@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Linking, Alert, Modal } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Linking, Alert, Modal,ActivityIndicator } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import axios from "axios";
 
-const PropertyListScreen = ({ route }) => {
-    const { post_id, location_id } = route.params; // Extracting the post_id and location_id from the route params
+const PropertyListScreen = ({ route,navigation }) => {
+    const { post_id, location_id ,type} = route.params; // Extracting the post_id and location_id from the route params
     const [properties, setProperties] = useState([]);
     const number = '+923007406322'
     const message = "hello there!!"
@@ -17,7 +17,54 @@ const PropertyListScreen = ({ route }) => {
     const [data, setData] = useState([]);
     const [error, setError] = useState();
     const [selectedFilter, setSelectedFilter] = useState(0);
+    const [loading, setLoading] = useState(true);
 
+    const fetchFilteredProperties = async () => {
+        setLoading(true); // Show loading indicator
+    
+        try {
+            // Make API request with correct parameters
+            const response = await axios.get('https://shelterseeker.projectflux.online/api/properties', {
+                params: {
+                    post_id: post_id, // `types` should be the selected post type (e.g., 'Buy' or 'Rent')
+                    location_id: location_id, // Find ID for the selected location
+                },
+            });
+    
+            // Log response data for debugging
+            console.log('API Response:', response.data);
+    
+            // Check if the response contains properties
+            if (response.data && Array.isArray(response.data.properties)) {
+                const filteredProperties = response.data.properties;
+    
+                // Handle case where no properties match the current filter
+                if (filteredProperties.length === 0) {
+                    Alert.alert('No properties match your criteria.');
+                    setProperties([]); // Clear properties if none found
+                } else {
+                    setProperties(filteredProperties); // Update state with fetched properties
+                }
+            } else {
+                console.warn('Unexpected response format:', response.data);
+                setProperties([]); // Clear properties if the response is invalid
+            }
+        } catch (error) {
+            console.log('Error fetching properties:', error);
+            setProperties([]); // Clear properties in case of error
+        } finally {
+            setLoading(false); // Hide loading indicator
+        }
+    };
+    
+    // Ensure fetchFilteredProperties is called whenever `post_id` or `location_id` changes
+    useEffect(() => {
+        fetchFilteredProperties();
+    }, [post_id, location_id]);
+    
+     // Dependency array to re-fetch when post_id or location_id change
+    // Dependenc
+ 
     const openUrl = async (url) => {
         const isSupported = await Linking.canOpenURL(url);
         if (isSupported) {
@@ -26,26 +73,7 @@ const PropertyListScreen = ({ route }) => {
             Alert.alert(`Don't know how to open this url: ${url}`);
         }
     }
-    useEffect(() => {
-        fetchFilteredProperties();
-    }, []);
-
-    const fetchFilteredProperties = async () => {
-        try {
-            const response = await axios.get('https://project.theposgeniee.com/api/properties', {
-                params: { // Corrected line
-                    post_id: post_id,
-                    location_id: location_id,
-                },
-
-            });
-            console.log(location_id);
-            setProperties(response.data.properties); // Set properties state with fetched data
-            console.log(response.data.properties);
-        } catch (error) {
-            console.error('Error fetching properties:', error);
-        }
-    };
+    
     return (
         <View>
             <View style={styles.line}>
@@ -65,7 +93,7 @@ const PropertyListScreen = ({ route }) => {
                     <Text style={styles.btntext}>Sort</Text>
                 </TouchableOpacity>
             </View>
-
+            
             <FlatList style={{ marginBottom: 100, backgroundColor: '#FFFFFF' }}
 
                 data={properties}
@@ -74,10 +102,10 @@ const PropertyListScreen = ({ route }) => {
                 showsVerticalScrollIndicator={false}
                 initialScrollIndex={ind}
                 renderItem={({ item }) => {
-                    const firstImageUrl = `https://project.theposgeniee.com/api/main${item.images[0].images}`;
-                    console.log(firstImageUrl);
+                    const firstImage = item.images.length > 0 ? item.images[0].images : null;
+                    console.log(firstImage);
                     return (
-                        <View
+                        <TouchableOpacity
                             style={{
                                 width: '95%',
                                 height: 190,
@@ -90,15 +118,15 @@ const PropertyListScreen = ({ route }) => {
                                 backgroundColor: '#FFFFFF',
                                 marginTop: 20,
                                 elevation: 15
-
-
-                            }}>
+                            }}
+                            onPress={() => navigation.navigate('PropertyDetail', { property: item })}
+                            >
                             <TouchableOpacity style={styles.favicon}>
                                 <Icon name="heart-o" size={24} color={"#191645"}></Icon>
                             </TouchableOpacity>
 
                             <Image
-                                source={{ uri: firstImageUrl }}
+                               source={{ uri: `https://shelterseeker.projectflux.online/api/properties${firstImage}` }}
                                 style={{
                                     width: 100,
                                     height: '90%',
@@ -138,7 +166,8 @@ const PropertyListScreen = ({ route }) => {
                                         marginTop: 10,
                                         marginLeft: 5
                                     }}>
-                                    <TouchableOpacity style={{ height: 35, width: 80, backgroundColor: '#191645', borderRadius: 10, justifyContent: 'center' }} onPress={() => navigation.navigate('Calculator')}>
+                                    <TouchableOpacity style={{ height: 35, width: 80, backgroundColor: '#191645', borderRadius: 10, justifyContent: 'center' }} 
+                                    onPress={() => navigation.navigate('Calculator',{ property: item })}>
                                         <Text
                                             style={{
                                                 fontSize: 16,
@@ -149,7 +178,8 @@ const PropertyListScreen = ({ route }) => {
                                             Calculator
                                         </Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={{ height: 35, width: 70, backgroundColor: '#191645', borderRadius: 10, justifyContent: "center", marginLeft: 5 }} onPress={() => {
+                                    <TouchableOpacity style={{ height: 35, width: 70, backgroundColor: '#191645', borderRadius: 10, justifyContent: "center", marginLeft: 5 }} 
+                                    onPress={() => {
                                         Linking.openURL(`tel:${number}`)
                                     }}>
                                         <MaterialIcons name="call" size={18} color='#FFFFFF' style={styles.icon} />
@@ -170,10 +200,11 @@ const PropertyListScreen = ({ route }) => {
                                     </TouchableOpacity>
                                 </View>
                             </View>
-                        </View>
+                        </TouchableOpacity>
                     );
                 }}
             />
+         
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -324,6 +355,19 @@ const styles = StyleSheet.create
         {
             position: 'absolute',
             left: 20
+        },
+        error:
+        {    
+            alignContent:'center',
+            alignItems:'center',
+        },
+        errorText:
+        {
+            color:'black',
+            fontSize:24,
+            fontWeight:'bold',
+            top:250,
+
         }
     });
 
