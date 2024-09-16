@@ -1,22 +1,50 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState ,useEffect} from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import axios from "axios";
 
 const SearchScreen = ({navigation}) => {
-  const [selectedCategory, setSelectedCategory] = useState();
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
+  const [Category, setCategory] = useState([]); // Store categories from API
+  const [types, setTypes] = useState({ });
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch categories
+        const categoryResponse = await axios.get('https://shelterseeker.projectflux.online/api/category');
+        setCategory(categoryResponse.data.Category);
+      const [firstResponse, secondResponse, thirdResponse] = await Promise.all([
+        axios.get('https://shelterseeker.projectflux.online/api/Firstype'),
+        axios.get('https://shelterseeker.projectflux.online/api/Secondtype'),
+        axios.get('https://shelterseeker.projectflux.online/api/Thirdtype')
+      ]);
+
+      setTypes({
+        Residential: firstResponse.data.FirstFiveTypes,
+        Commercial: secondResponse.data.SecondFiveTypes,
+        'Plot Area': thirdResponse.data.ThirdFiveTypes
+      });
+      
+    } catch (error) {
+      console.error("Error fetching types", error);
+    }
+  };
+  fetchData();
+}, []);
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
     setSelectedType(null); // Reset type when category changes
   };
 
-  const handleTypeSelect = (type) => {
+  const handleFirsTypeSelect = (type) => {
     setSelectedType(type);
-   
   };
-
+  // Get types based on selected category
+  const filteredTypes = selectedCategory ? types[selectedCategory] || [] : [];
   return (
     <View style={styles.container}>
         <View style={styles.header}>
@@ -28,154 +56,43 @@ const SearchScreen = ({navigation}) => {
       <Text style={styles.title}>Property Type</Text>
 
       <View style={styles.categoryContainer}>
+      {Category.map((category) => (
         <TouchableOpacity
-          style={[styles.categoryButton, selectedCategory === 'Residential' && styles.selectedButton]}
-          onPress={() => handleCategorySelect('Residential')}
+        key={category.id}
+          style={[styles.categoryButton, selectedCategory === category.category_name && styles.selectedButton]}
+          onPress={() => handleCategorySelect(category.category_name)}
         >
-          <Text style={styles.buttonText}>Residential</Text>
+          <Text style={styles.buttonText}>{category.category_name}</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.categoryButton, selectedCategory === 'Plot' && styles.selectedButton]}
-          onPress={() => handleCategorySelect('Plot')}
-        >
-          <Text style={styles.buttonText}>Plot</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.categoryButton, selectedCategory === 'Commercial' && styles.selectedButton]}
-          onPress={() => handleCategorySelect('Commercial')}
-        >
-          <Text style={styles.buttonText}>Commercial</Text>
-        </TouchableOpacity>
+         ))}
+        
       </View>
 
-      {selectedCategory === 'Residential' && (
+      {selectedCategory && (
         <View style={styles.typeContainer}>
+           {filteredTypes.length > 0 ? (
+            filteredTypes.map((type) => (
           <TouchableOpacity
-            style={[styles.typeButton, selectedType === 'All' && styles.selectedTypeButton]}
-            onPress={() => handleTypeSelect('All')}
+            key={type.id}
+            style={[styles.typeButton, selectedType === type.property_type && styles.selectedTypeButton]}
+            onPress={() => handleFirsTypeSelect(type.property_type)}
           >
              <MaterialCommunityIcons name="view-grid-outline" size={20} color='black' style={styles.icon1}/>
-            <Text style={styles.buttonText}>All</Text>
+            <Text style={styles.buttonText}>{type.property_type}</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.typeButton, selectedType === 'House' && styles.selectedTypeButton]}
-            onPress={() => handleTypeSelect('House')}
-          >
-            <MaterialCommunityIcons name="home" size={20} color='black' style={styles.icon1}/>
-            <Text style={styles.buttonText}>House</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.typeButton, selectedType === 'Lower Portion' && styles.selectedTypeButton]}
-            onPress={() => handleTypeSelect('Lower Portion')}
-          >
-            <MaterialCommunityIcons name="home-variant-outline" size={20} color='black' style={styles.icon1}/>
-            <Text style={styles.buttonText}>Lower Portion</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.typeButton, selectedType === 'Room' && styles.selectedTypeButton]}
-            onPress={() => handleTypeSelect('Room')}
-          >
-            <MaterialCommunityIcons name="home-modern" size={20} color='black' style={styles.icon1}/>
-            <Text style={styles.buttonText}>Room</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.typeButton, selectedType === 'Guest House' && styles.selectedTypeButton]}
-            onPress={() => handleTypeSelect('Guest House')}
-          >
-            <MaterialCommunityIcons name="warehouse" size={20} color='black' style={styles.icon1}/>
-            <Text style={styles.buttonText}>Guest House</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-      {selectedCategory === 'Plot' && (
-        <View style={styles.typeContainer}>
-          <TouchableOpacity
-            style={[styles.typeButton, selectedType === 'All' && styles.selectedTypeButton]}
-            onPress={() => handleTypeSelect('All')}
-          >
-            <MaterialCommunityIcons name="view-grid-outline" size={20} color='black' style={styles.icon1}/>
-            <Text style={styles.buttonText}>All</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.typeButton, selectedType === 'Residential Plot' && styles.selectedTypeButton]}
-            onPress={() => handleTypeSelect('Residential Plot')}
-          >
-            <MaterialCommunityIcons name="greenhouse" size={20} color='black' style={styles.icon1}/>
-            <Text style={styles.buttonText}>Residential Plot</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.typeButton, selectedType === 'Commercial Plot' && styles.selectedTypeButton]}
-            onPress={() => handleTypeSelect('Commercial Plot')}
-          >
-            <MaterialCommunityIcons name="home-city-outline" size={20} color='black' style={styles.icon1}/>
-            <Text style={styles.buttonText}>Commercial Plot</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.typeButton, selectedType === 'Farmhouse Plot ' && styles.selectedTypeButton]}
-            onPress={() => handleTypeSelect('Farmhouse Plot')}
-          >
-            <MaterialCommunityIcons name="home-variant-outline" size={20} color='black' style={styles.icon1}/>
-            <Text style={styles.buttonText}>Farmhouse Plot</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.typeButton, selectedType === 'Agricultural Land' && styles.selectedTypeButton]}
-            onPress={() => handleTypeSelect('Agricultural Land')}
-          >
-            <MaterialCommunityIcons name="warehouse" size={20} color='black' style={styles.icon1}/>
-            <Text style={styles.buttonText}>Agricultural Land</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-      {selectedCategory === 'Commercial' && (
-        <View style={styles.typeContainer}>
-          <TouchableOpacity
-            style={[styles.typeButton, selectedType === 'All' && styles.selectedTypeButton]}
-            onPress={() => handleTypeSelect('All')}
-          >
-            <MaterialCommunityIcons name="view-grid-outline" size={20} color='black' style={styles.icon1}/>
-            <Text style={styles.buttonText}>All</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.typeButton, selectedType === 'Office' && styles.selectedTypeButton]}
-            onPress={() => handleTypeSelect('Office')}
-          >
-            <MaterialCommunityIcons name="office-building-outline" size={20} color='black' style={styles.icon1}/>
-            <Text style={styles.buttonText}>Office</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.typeButton, selectedType === 'Shop' && styles.selectedTypeButton]}
-            onPress={() => handleTypeSelect('Shop')}
-          >
-            <MaterialCommunityIcons name="warehouse" size={20} color='black' style={styles.icon1}/>
-            <Text style={styles.buttonText}>Shop</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.typeButton, selectedType === 'Plaza' && styles.selectedTypeButton]}
-            onPress={() => handleTypeSelect('Plaza')}
-          >
-            <MaterialCommunityIcons name="office-building" size={20} color='black' style={styles.icon1}/>
-            <Text style={styles.buttonText}>Plaza</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.typeButton, selectedType === 'Building' && styles.selectedTypeButton]}
-            onPress={() => handleTypeSelect('Building')}
-          >
-            <MaterialCommunityIcons name="hospital-building" size={20} color='black' style={styles.icon1}/>
-            <Text style={styles.buttonText}>Building</Text>
-          </TouchableOpacity>
+              ))
+            ):null
+          }
           
         </View>
       )}
+     
 
       {/* Similar structure for other categories (Plot, Commercial) */}
       <TouchableOpacity style={styles.Apply}>
             <Text style={styles.Applytext}>Apply Filters</Text>
           </TouchableOpacity>
-      {selectedType && (
-        <Text style={styles.selectedType}>
-          Selected Type: {selectedType}
-        </Text>
-      )}
+    
     </View>
   );
 };

@@ -78,7 +78,7 @@ const BuyListingScreen = ({ route,navigation }) => {
         <Text style={styles.errorText}>{error}</Text>
         </View>
       ) : properties.length > 0 ? (
-            <FlatList style={{ marginBottom: 100, backgroundColor: '#FFFFFF' }}
+            <FlatList style={{ marginBottom: 130, backgroundColor: '#FFFFFF' }}
 
                 data={properties}
                 keyExtractor={(item) => item.id.toString()}
@@ -86,8 +86,7 @@ const BuyListingScreen = ({ route,navigation }) => {
                 showsVerticalScrollIndicator={false}
                 initialScrollIndex={ind}
                 renderItem={({ item }) => {
-                    const firstImage = item.images.length > 0 ? item.images[0].images : null;
-                    console.log(firstImage);
+                    
                     return (
                         <TouchableOpacity
                             style={{
@@ -110,7 +109,8 @@ const BuyListingScreen = ({ route,navigation }) => {
                             </TouchableOpacity>
 
                             <Image
-                               source={{ uri: `https://shelterseeker.projectflux.online/api/properties${firstImage}` }}
+                               source={{ uri:`https://shelterseeker.projectflux.online/api/properties/${item.image}`
+                                 }}
                                 style={{
                                     width: 100,
                                     height: '90%',
