@@ -14,7 +14,7 @@ const CalculatorScreen=({navigation,route})=>
   const calculateYears = () => {
     
     const totalYears = parseFloat(years);
-    const totalInvestmentNeeded = parseFloat(propertyPrice);
+    const totalInvestmentNeeded = parseFloat(property.price);
     const yearlyInvestment = totalInvestmentNeeded / totalYears;
     const monthlyInvestment = yearlyInvestment /12;
     setMonthlyInvestment(monthlyInvestment.toFixed(2));;

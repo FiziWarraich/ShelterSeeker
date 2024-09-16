@@ -20,6 +20,7 @@ import ProfileScreen from './ScreenStack/ProfileScreen';
 import SearchScreen from './ScreenStack/SearchScreen';
 import PropertyListScreen from './ScreenStack/PropertyListScreen';
 import PropertyDetailScreen from './ScreenStack/PropertyDetailScreen';
+import FilterPropertyScreen from './ScreenStack/FilterPropertyScreen';
 const Stack=createNativeStackNavigator();
 const App=()=>
 {
@@ -37,6 +38,7 @@ return(
       <Stack.Screen name='Filters' component={SearchScreen}/>
       <Stack.Screen name='PropertyList' component={PropertyListScreen}/>
       <Stack.Screen name='PropertyDetail' component={PropertyDetailScreen}/>
+      <Stack.Screen name='FilterProperty' component={FilterPropertyScreen}/>
     </Stack.Navigator>
   </NavigationContainer>
 )

@@ -43,8 +43,31 @@ const SearchScreen = ({navigation}) => {
   const handleFirsTypeSelect = (type) => {
     setSelectedType(type);
   };
-  // Get types based on selected category
-  const filteredTypes = selectedCategory ? types[selectedCategory] || [] : [];
+
+  const applyFilters = () => {
+    if (!selectedCategory || !selectedType) {
+      alert("Please select both a category and a type.");
+      return;
+    }
+
+    // Find the selected category and type's IDs
+    const selectedCategoryData = Category.find(cat => cat.category_name === selectedCategory);
+    const selectedTypeData = types[selectedCategory].find(t => t.property_type === selectedType);
+
+    const category_id = selectedCategoryData ? selectedCategoryData.id : null;
+    const type_id = selectedTypeData ? selectedTypeData.id : null;
+
+    // Navigate to PropertyListScreen and pass category_id and type_id
+    navigation.navigate('FilterProperty', {
+      category_id,
+      type_id
+    });
+  };
+
+  // Get types based on selected category or show all types if none is selected
+  const filteredTypes = selectedCategory ? types[selectedCategory] || [] :
+  Object.values(types).flat();// Flatten all types if no category is selected
+
   return (
     <View style={styles.container}>
         <View style={styles.header}>
@@ -89,7 +112,7 @@ const SearchScreen = ({navigation}) => {
      
 
       {/* Similar structure for other categories (Plot, Commercial) */}
-      <TouchableOpacity style={styles.Apply}>
+      <TouchableOpacity style={styles.Apply} onPress={applyFilters}>
             <Text style={styles.Applytext}>Apply Filters</Text>
           </TouchableOpacity>
     
