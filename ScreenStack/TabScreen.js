@@ -70,7 +70,7 @@ return(
 
       }}/>
       
-        <Tab.Screen name='Favourite' component={FavouriteScreen}
+        <Tab.Screen name='Favourite' component={FavouriteScreen} 
         options={{tabBarIcon:({focused})=>{
            return(
            <View style={{alignItems:'center',justifyContent:'center'}} >

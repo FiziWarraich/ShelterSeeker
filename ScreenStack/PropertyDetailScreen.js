@@ -17,7 +17,7 @@ const PropertyDetailScreen = ({ route }) => {
       <FlatList
         data={images}
         horizontal
-        showsHorizontalScrollIndicator={false}
+        showsHorizontalScrollIndicator={true}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => {
           // Debugging: log the full image URL
@@ -28,7 +28,6 @@ const PropertyDetailScreen = ({ route }) => {
               <Image
                 source={{ uri: item.images }} // Using the full URL directly
                 style={styles.image}
-                defaultSource={require('../assests/home.jpeg')}
                 onError={(error) => console.log('Image load error:', error)}
               />
             </View>
@@ -68,10 +67,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   image: {
-    width: '100%',
-    height: 200,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
+    width: 400, // Set a width
+    height: 200, // Set a height
+    resizeMode: 'cover',
   },
   detailsContainer: {
     padding: 16,
@@ -83,8 +81,9 @@ const styles = StyleSheet.create({
   },
   imageContainer:
   {
-  height:'100%',
-  width:'90%'
+    marginRight: 5, // Add spacing between images
+    borderRadius: 10,
+    overflow: 'hidden', 
   },
   type: {
     right:-110,

@@ -6,7 +6,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ProfileScreen = ({ navigation,onSubmit }) => {
+const ProfileScreen = ({ navigation }) => {
   const [showModal,setshowModal]=useState(false)
   const [showmodal1,setshowmodal1]=useState(false)
   const [feedback,setFeedback]=useState(false)
