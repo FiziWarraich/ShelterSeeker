@@ -56,7 +56,7 @@ return(
         );
       }
       }}/>
-     <Tab.Screen name='Search' component={SearchScreen}
+     <Tab.Screen name='Search' component={SearchScreen}  
      options={{tabBarIcon:()=>{
         return(
         <View style={{alignItems:'center',justifyContent:'center'}} >

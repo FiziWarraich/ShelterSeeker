@@ -7,7 +7,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import axios from "axios";
 
 const BuyListingScreen = ({ route,navigation }) => {
-    const { type} = route.params; // Extracting the post_id and location_id from the route params
+    const { post_id,type} = route.params; // Extracting the post_id and location_id from the route params
     const [properties, setProperties] = useState([]);
     const number = '+923007406322'
     const message = "hello there!!"
@@ -24,7 +24,7 @@ const BuyListingScreen = ({ route,navigation }) => {
     try {
       const response = await axios.get('https://shelterseeker.projectflux.online/api/properties'); // Adjust API URL accordingly
       // Filter properties based on type (Rent or Buy)
-      const filteredProperties = response.data.properties.filter(property => property.post === type);
+      const filteredProperties = response.data.properties.filter(property => property.post === post_id);
       if (filteredProperties.length === 0) {
         setError('Property not found'); // Set error message if no properties found
       } else {
@@ -40,7 +40,7 @@ const BuyListingScreen = ({ route,navigation }) => {
 
   useEffect(() => {
     fetchProperties();
-  }, [type]);
+  }, [post_id]);
 
     const openUrl = async (url) => {
         const isSupported = await Linking.canOpenURL(url);
@@ -55,12 +55,15 @@ const BuyListingScreen = ({ route,navigation }) => {
     return (
         <View>
             <View style={styles.line}>
-                <Text style={styles.text}>PropertyList</Text>
+            <TouchableOpacity onPress={()=>navigation.goBack()}>
+            <MaterialCommunityIcons name="less-than" size={18}  style={styles.iconback}/>
+            </TouchableOpacity>
+                <Text style={styles.text}>{post_id}</Text>
                 <Icon name="home" size={24} color={"#FFFFFF"} style={styles.homeicon}></Icon>
             </View>
 
             <View style={styles.container}>
-                <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Filters',{type})}>
+                <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Filters',{post_id})}>
                     <MaterialCommunityIcons name="filter-outline" size={18} color='#FFFFFF' style={styles.icon} />
                     <Text style={styles.btntext}>Filters</Text>
                 </TouchableOpacity>
@@ -75,7 +78,13 @@ const BuyListingScreen = ({ route,navigation }) => {
         <ActivityIndicator size="large" color="#0000ff" />
       ) : error ? (
         <View style={styles.error}>
-        <Text style={styles.errorText}>{error}</Text>
+        <Image style={{height:70,top:180,width:70,resizeMode:'cover',position:'absolute',}} source={require("../assests/sad.png")} />
+                <Text style={styles.errorText}>Property not found</Text>
+                <TouchableOpacity style={{borderRadius:5,top:280,borderWidth:1,height:40,width:100,justifyContent:'center',backgroundColor:'#191645'}}
+          onPress={()=>navigation.goBack()} 
+       >
+              <Text style={{color:'#FFFFFF',fontSize:20,alignSelf:'center'}} >Ok</Text>
+            </TouchableOpacity>
         </View>
       ) : properties.length > 0 ? (
             <FlatList style={{ marginBottom: 130, backgroundColor: '#FFFFFF' }}
@@ -138,7 +147,7 @@ const BuyListingScreen = ({ route,navigation }) => {
                                     <Text style={{ fontSize: 16, marginLeft: 10, color: 'black' }}>
                                         {item.post}
                                     </Text>
-                                    <Text style={{ fontSize: 16, marginLeft: 20, color: 'black' }}>
+                                    <Text style={{ fontSize: 16, marginLeft: 40, color: 'black' }}>
                                          {item.type}
                                     </Text>
                                 </View>
@@ -285,12 +294,21 @@ const styles = StyleSheet.create
             backgroundColor: '#FFFFFF'
         },
         line: {
-            height: 70,
-            borderBottomWidth: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#191645',
+            flexDirection:'row',
+            height:70,
+            width:'100%',
+            alignItems:'center',
+            borderBottomWidth:1.5,
+            marginBottom: 20,
+            backgroundColor:'#191645',
+            justifyContent:'center',
+            alignContent:'center'
         },
+        iconback:
+   {
+    color:'#FFFFFF',
+    marginLeft:-135
+   },
         text:
         {
             color: "#FFFFFF",

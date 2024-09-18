@@ -7,7 +7,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import axios from "axios";
 
 const FilterListingScreen = ({ route,navigation }) => {
-    const { type, category_id,type_id} = route.params; // Extracting the post_id and location_id from the route params
+    const { post_id, category_id,type_id} = route.params; // Extracting the post_id and location_id from the route params
     const [properties, setProperties] = useState([]);
     const number = '+923007406322'
     const message = "hello there!!"
@@ -29,7 +29,7 @@ const FilterListingScreen = ({ route,navigation }) => {
                      // Find ID for the selected location
                     category_id:category_id,
                     type_id:type_id,
-                    type:type
+                    post_id:post_id
                 },
             });
     
@@ -62,7 +62,7 @@ const FilterListingScreen = ({ route,navigation }) => {
     // Ensure fetchFilteredProperties is called whenever `post_id` or `location_id` changes
     useEffect(() => {
         fetchFilteredProperties();
-    }, [post_id, location_id]);
+    }, [post_id, category_id,typ]);
     
      // Dependency array to re-fetch when post_id or location_id change
     // Dependenc

@@ -23,16 +23,26 @@ const PropertyListScreen = ({ route,navigation }) => {
         setLoading(true); // Show loading indicator
     
         try {
-            // Make API request with correct parameters
-            const response = await axios.get('https://shelterseeker.projectflux.online/api/properties', {
-                params: {
-                    post_id: post_id, // `types` should be the selected post type (e.g., 'Buy' or 'Rent')
-                    location_id: location_id, // Find ID for the selected location
-                },
-            });
+            // Start with an empty object for params
+            let params = {};
     
-            // Log response data for debugging
-            console.log('API Response:', response.data);
+            // Add post_id to params if it exists
+            if (post_id) {
+                params.post_id = post_id;
+            }
+    
+            // Add location_id to params if it exists
+            if (location_id) {
+                params.location_id = location_id;
+            }
+    
+            // Add other filters as necessary (e.g., type, category, etc.)
+            
+    
+            // Make the API request with the current parameters
+            const response = await axios.get('https://shelterseeker.projectflux.online/api/properties', {
+                params: params // Pass the filter parameters dynamically
+            });
     
             // Check if the response contains properties
             if (response.data && Array.isArray(response.data.properties)) {
@@ -77,7 +87,10 @@ const PropertyListScreen = ({ route,navigation }) => {
     return (
         <View>
             <View style={styles.line}>
-                <Text style={styles.text}>PropertyList</Text>
+            <TouchableOpacity onPress={()=>navigation.goBack()}>
+            <MaterialCommunityIcons name="less-than" size={18}  style={styles.iconback}/>
+            </TouchableOpacity>
+                <Text style={styles.text}>Property List</Text>
                 <Icon name="home" size={24} color={"#FFFFFF"} style={styles.homeicon}></Icon>
             </View>
 
@@ -93,7 +106,19 @@ const PropertyListScreen = ({ route,navigation }) => {
                     <Text style={styles.btntext}>Sort</Text>
                 </TouchableOpacity>
             </View>
-            
+            {loading ? (
+            <ActivityIndicator size="large" color="#0000ff" />
+        ) : properties.length === 0 ? (
+            <View style={styles.error}>
+                <Image style={{height:70,top:180,width:70,resizeMode:'cover',position:'absolute',}} source={require("../assests/sad.png")} />
+                <Text style={styles.errorText}>Property not found</Text>
+                <TouchableOpacity style={{borderRadius:5,top:280,borderWidth:1,height:40,width:100,justifyContent:'center',backgroundColor:'#191645'}}
+          onPress={()=>navigation.goBack()} 
+       >
+              <Text style={{color:'#FFFFFF',fontSize:20,alignSelf:'center'}} >Ok</Text>
+            </TouchableOpacity>
+            </View>
+        ) : (
             <FlatList style={{ marginBottom: 100, backgroundColor: '#FFFFFF' }}
 
                 data={properties}
@@ -141,7 +166,7 @@ const PropertyListScreen = ({ route,navigation }) => {
                                     {item.location}
                                 </Text>
                                 <Text style={{ fontSize: 16, fontWeight: '400', margin: 3, marginLeft: 10, color: 'black' }}>
-                                    Category: {item.category}
+                                     {item.category}
                                 </Text>
                                 <View
                                     style={{
@@ -151,10 +176,10 @@ const PropertyListScreen = ({ route,navigation }) => {
                                         marginLeft: 5
                                     }}>
                                     <Text style={{ fontSize: 16, marginLeft: 10, color: 'black' }}>
-                                        Post: {item.post}
+                                       {item.post}
                                     </Text>
-                                    <Text style={{ fontSize: 16, marginLeft: 20, color: 'black' }}>
-                                        Type: {item.type}
+                                    <Text style={{ fontSize: 16, marginLeft: 40, color: 'black' }}>
+                                        {item.type}
                                     </Text>
                                 </View>
                                 <View
@@ -202,7 +227,7 @@ const PropertyListScreen = ({ route,navigation }) => {
                     );
                 }}
             />
-         
+            )}
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -298,12 +323,21 @@ const styles = StyleSheet.create
             backgroundColor: '#FFFFFF'
         },
         line: {
-            height: 70,
-            borderBottomWidth: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: '#191645',
+            flexDirection:'row',
+            height:70,
+            width:'100%',
+            alignItems:'center',
+            borderBottomWidth:1.5,
+            marginBottom: 20,
+            backgroundColor:'#191645',
+            justifyContent:'center',
+            alignContent:'center'
         },
+        iconback:
+   {
+    color:'#FFFFFF',
+    marginLeft:-100
+   },
         text:
         {
             color: "#FFFFFF",

@@ -4,7 +4,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import axios from "axios";
 
 const SearchScreen = ({navigation,route}) => {
-  const { post_id, location_id,type } = route.params;
+  const { post_id, location_id,type } = route.params ||{};
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
   const [Category, setCategory] = useState([]); // Store categories from API
@@ -59,7 +59,7 @@ const SearchScreen = ({navigation,route}) => {
 
     const category_id = selectedCategoryData ? selectedCategoryData.id : null;
     const type_id = selectedTypeData ? selectedTypeData.id : null;
-
+  console.log(post_id)
     // Navigate to PropertyListScreen and pass category_id and type_id
     if (category_id && type_id) {
       // Navigate to FilterProperty screen with post_id, location_id, category_id, and type_id
@@ -68,7 +68,7 @@ const SearchScreen = ({navigation,route}) => {
         location_id,      // Pass location_id
         category_id,      // Pass selected category ID
         type_id ,        // Pass selected type ID
-        type,
+        type
       });
     } else {
       alert("Selected category or type is invalid.");

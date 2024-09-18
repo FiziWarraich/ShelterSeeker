@@ -37,8 +37,8 @@ const HomeCards = () => {
   
 
    
-const handleChoice = (type) => {
-   navigation.navigate('BuyListing', { type }); // Navigates to PropertyListScreen with selected type
+const handleChoice = (post_id) => {
+   navigation.navigate('PropertyList', {post_id }); // Navigates to PropertyListScreen with selected type
  };
  const buyTypes = Post.filter(post => post.property_post.toLowerCase() === 'buy'); // Ensure 'buy' is lowercase
  const rentTypes = Post.filter(post => post.property_post.toLowerCase() === 'rent'); 
@@ -53,7 +53,7 @@ const handleChoice = (type) => {
                <Text style={styles.redlogotext1}>Don't wait buy a property.</Text>
                <Text style={styles.redlogotext1}>"BUY LAND AND WAIT'</Text>
                {buyTypes.map((Post) => (
-               <TouchableOpacity style={styles.redlogobtn} onPress={() => handleChoice(Post.property_post)}>
+               <TouchableOpacity key={Post.id} style={styles.redlogobtn} onPress={() => handleChoice(1)}>
                   <Text style={styles.redlogotextbtn}>{Post.property_post}</Text>
                </TouchableOpacity>
                ))}
@@ -65,7 +65,7 @@ const handleChoice = (type) => {
                <Text style={styles.greylogotext}>Rent a property</Text>
                <Text style={styles.greylogotext1}>"Home is the nicest word there is."</Text>
                {rentTypes.map((Post) => (
-               <TouchableOpacity style={styles.greylogobtn} onPress={() => handleChoice(Post.property_post)}>
+               <TouchableOpacity key={Post.id} style={styles.greylogobtn} onPress={() => handleChoice(2)}>
                   <Text style={styles.greylogotextbtn}>{Post.property_post}</Text>
                </TouchableOpacity>
                ))}

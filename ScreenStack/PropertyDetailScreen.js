@@ -1,5 +1,5 @@
 // PropertyDetailScreen.js
-import React from 'react';
+import React ,{useEffect} from 'react';
 import { View, Text, Image, StyleSheet, ScrollView ,FlatList} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import GoogleMapView from '../Components/GoogleMapView';
@@ -8,25 +8,34 @@ const PropertyDetailScreen = ({ route }) => {
   const { property } = route.params;
   const images = property.images;
   const BASE_URL = 'https://shelterseeker.projectflux.online/storage/adminCategory/';
- 
+  useEffect(() => {
+    console.log('Images Array:', images);
+  }, [ images]);
+
   return (
     <ScrollView style={styles.container}>
-       <FlatList
+      <FlatList
         data={images}
         horizontal
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => ( 
-            <View style={styles.imageContainer}>
-            <Image
-             source={{ uri: `${BASE_URL}${item.images}` }}
-              style={styles.image}
+        renderItem={({ item }) => {
+          // Debugging: log the full image URL
+          console.log(item.images);
 
-            />
-          </View>
-        )}
-        
+          return (
+            <View style={styles.imageContainer}>
+              <Image
+                source={{ uri: item.images }} // Using the full URL directly
+                style={styles.image}
+                defaultSource={require('../assests/home.jpeg')}
+                onError={(error) => console.log('Image load error:', error)}
+              />
+            </View>
+          );
+        }}
       />
+
       <View style={styles.detailsContainer}>
             <View style={{flexDirection:'row'}}>
               <Text style={styles.post}>House for {property.post}</Text>
