@@ -6,8 +6,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import axios from "axios";
 
-const BuyListingScreen = ({ route,navigation }) => {
-    const { type} = route.params; // Extracting the post_id and location_id from the route params
+const FilterListingScreen = ({ route,navigation }) => {
+    const { type, category_id,type_id} = route.params; // Extracting the post_id and location_id from the route params
     const [properties, setProperties] = useState([]);
     const number = '+923007406322'
     const message = "hello there!!"
@@ -19,29 +19,54 @@ const BuyListingScreen = ({ route,navigation }) => {
     const [selectedFilter, setSelectedFilter] = useState(0);
     const [loading, setLoading] = useState(true);
 
-  // Function to fetch properties based on the selected type
-  const fetchProperties = async () => {
-    try {
-      const response = await axios.get('https://shelterseeker.projectflux.online/api/properties'); // Adjust API URL accordingly
-      // Filter properties based on type (Rent or Buy)
-      const filteredProperties = response.data.properties.filter(property => property.post === type);
-      if (filteredProperties.length === 0) {
-        setError('Property not found'); // Set error message if no properties found
-      } else {
-        setProperties(filteredProperties); // Set the filtered properties
-        setError(''); // Clear error message if properties are found
-      }
-    } catch (error) {
-      console.log('Error fetching properties:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchProperties();
-  }, [type]);
-
+    const fetchFilteredProperties = async () => {
+        setLoading(true); // Show loading indicator
+    
+        try {
+            // Make API request with correct parameters
+            const response = await axios.get('https://shelterseeker.projectflux.online/api/properties', {
+                params: {
+                     // Find ID for the selected location
+                    category_id:category_id,
+                    type_id:type_id,
+                    type:type
+                },
+            });
+    
+            // Log response data for debugging
+            console.log('API Response:', response.data);
+    
+            // Check if the response contains properties
+            if (response.data && Array.isArray(response.data.properties)) {
+                const filteredProperties = response.data.properties;
+    
+                // Handle case where no properties match the current filter
+                if (filteredProperties.length === 0) {
+                    Alert.alert('No properties match your criteria.');
+                    setProperties([]); // Clear properties if none found
+                } else {
+                    setProperties(filteredProperties); // Update state with fetched properties
+                }
+            } else {
+                console.warn('Unexpected response format:', response.data);
+                setProperties([]); // Clear properties if the response is invalid
+            }
+        } catch (error) {
+            console.log('Error fetching properties:', error);
+            setProperties([]); // Clear properties in case of error
+        } finally {
+            setLoading(false); // Hide loading indicator
+        }
+    };
+    
+    // Ensure fetchFilteredProperties is called whenever `post_id` or `location_id` changes
+    useEffect(() => {
+        fetchFilteredProperties();
+    }, [post_id, location_id]);
+    
+     // Dependency array to re-fetch when post_id or location_id change
+    // Dependenc
+ 
     const openUrl = async (url) => {
         const isSupported = await Linking.canOpenURL(url);
         if (isSupported) {
@@ -50,8 +75,7 @@ const BuyListingScreen = ({ route,navigation }) => {
             Alert.alert(`Don't know how to open this url: ${url}`);
         }
     }
-   
-   
+    
     return (
         <View>
             <View style={styles.line}>
@@ -60,7 +84,7 @@ const BuyListingScreen = ({ route,navigation }) => {
             </View>
 
             <View style={styles.container}>
-                <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Filters',{type})}>
+                <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Filters')}>
                     <MaterialCommunityIcons name="filter-outline" size={18} color='#FFFFFF' style={styles.icon} />
                     <Text style={styles.btntext}>Filters</Text>
                 </TouchableOpacity>
@@ -71,14 +95,8 @@ const BuyListingScreen = ({ route,navigation }) => {
                     <Text style={styles.btntext}>Sort</Text>
                 </TouchableOpacity>
             </View>
-            {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : error ? (
-        <View style={styles.error}>
-        <Text style={styles.errorText}>{error}</Text>
-        </View>
-      ) : properties.length > 0 ? (
-            <FlatList style={{ marginBottom: 130, backgroundColor: '#FFFFFF' }}
+            
+            <FlatList style={{ marginBottom: 100, backgroundColor: '#FFFFFF' }}
 
                 data={properties}
                 keyExtractor={(item) => item.id.toString()}
@@ -86,7 +104,8 @@ const BuyListingScreen = ({ route,navigation }) => {
                 showsVerticalScrollIndicator={false}
                 initialScrollIndex={ind}
                 renderItem={({ item }) => {
-                    
+                    const firstImage = item.images.length > 0 ? item.images[0].images : null;
+                    console.log(firstImage);
                     return (
                         <TouchableOpacity
                             style={{
@@ -109,7 +128,7 @@ const BuyListingScreen = ({ route,navigation }) => {
                             </TouchableOpacity>
 
                             <Image
-                               source={{ uri:item.image }}
+                               source={{ uri: `https://shelterseeker.projectflux.online/api/properties${firstImage}` }}
                                 style={{
                                     width: 100,
                                     height: '90%',
@@ -126,7 +145,7 @@ const BuyListingScreen = ({ route,navigation }) => {
                                     {item.location}
                                 </Text>
                                 <Text style={{ fontSize: 16, fontWeight: '400', margin: 3, marginLeft: 10, color: 'black' }}>
-                                     {item.category}
+                                    Category: {item.category}
                                 </Text>
                                 <View
                                     style={{
@@ -136,10 +155,10 @@ const BuyListingScreen = ({ route,navigation }) => {
                                         marginLeft: 5
                                     }}>
                                     <Text style={{ fontSize: 16, marginLeft: 10, color: 'black' }}>
-                                        {item.post}
+                                        Post: {item.post}
                                     </Text>
                                     <Text style={{ fontSize: 16, marginLeft: 20, color: 'black' }}>
-                                         {item.type}
+                                        Type: {item.type}
                                     </Text>
                                 </View>
                                 <View
@@ -187,9 +206,7 @@ const BuyListingScreen = ({ route,navigation }) => {
                     );
                 }}
             />
-        ) : (
-            <Text >No properties available</Text>
-          )}
+         
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -356,4 +373,4 @@ const styles = StyleSheet.create
         }
     });
 
-export default BuyListingScreen;
+export default FilterListingScreen;

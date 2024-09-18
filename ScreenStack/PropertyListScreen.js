@@ -82,7 +82,7 @@ const PropertyListScreen = ({ route,navigation }) => {
             </View>
 
             <View style={styles.container}>
-                <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Filters')}>
+                <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Filters',{post_id,location_id})}>
                     <MaterialCommunityIcons name="filter-outline" size={18} color='#FFFFFF' style={styles.icon} />
                     <Text style={styles.btntext}>Filters</Text>
                 </TouchableOpacity>
@@ -102,8 +102,6 @@ const PropertyListScreen = ({ route,navigation }) => {
                 showsVerticalScrollIndicator={false}
                 initialScrollIndex={ind}
                 renderItem={({ item }) => {
-                    const firstImage = item.images.length > 0 ? item.images[0].images : null;
-                    console.log(firstImage);
                     return (
                         <TouchableOpacity
                             style={{
@@ -126,7 +124,7 @@ const PropertyListScreen = ({ route,navigation }) => {
                             </TouchableOpacity>
 
                             <Image
-                               source={{ uri: `https://shelterseeker.projectflux.online/api/properties${firstImage}` }}
+                                source={{ uri:item.image }}
                                 style={{
                                     width: 100,
                                     height: '90%',

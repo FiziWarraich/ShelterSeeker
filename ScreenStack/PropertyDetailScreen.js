@@ -6,8 +6,9 @@ import GoogleMapView from '../Components/GoogleMapView';
 
 const PropertyDetailScreen = ({ route }) => {
   const { property } = route.params;
-  const images = property.Images;
-console.log(property.location_latitude)
+  const images = property.images;
+  const BASE_URL = 'https://shelterseeker.projectflux.online/storage/adminCategory/';
+ 
   return (
     <ScrollView style={styles.container}>
        <FlatList
@@ -15,10 +16,10 @@ console.log(property.location_latitude)
         horizontal
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
+        renderItem={({ item }) => ( 
             <View style={styles.imageContainer}>
             <Image
-              source={{ uri: `https://shelterseeker.projectflux.online/api/propertiesadminCategory/${item.images}` }}
+             source={{ uri: `${BASE_URL}${item.images}` }}
               style={styles.image}
 
             />
@@ -77,13 +78,13 @@ const styles = StyleSheet.create({
   width:'90%'
   },
   type: {
-    right:-150,
+    right:-110,
     fontSize: 16,
     marginBottom: 8,
     color: '#000',
   },
   icon: {
-    right:-150,
+    right:-110,
     marginBottom: 8,
     top:2
   },

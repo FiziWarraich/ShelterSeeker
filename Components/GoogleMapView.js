@@ -4,7 +4,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
 
 
-export default function GoogleMapView({latitude,longitude}) {
+export default function GoogleMapView({latitude,longitude,route}) {
    return (
         <View style={styles.container}>
          <MapView 
@@ -19,7 +19,7 @@ export default function GoogleMapView({latitude,longitude}) {
 >
 <Marker
       coordinate={{ latitude: latitude, longitude: longitude }}
-      title={'Property Location'}
+      title={`Property's Location`}
       description={`This is Property's location`}
     />
      

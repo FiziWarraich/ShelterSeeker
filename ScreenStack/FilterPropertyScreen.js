@@ -28,8 +28,9 @@ const FilterPropertyScreen = ({ route,navigation }) => {
                 params: {
                     post_id: post_id, // `types` should be the selected post type (e.g., 'Buy' or 'Rent')
                     location_id: location_id, // Find ID for the selected location
-                    category_id:category_id,
-                    type_id:type_id
+                    category_id:category_id ||null,
+                    type_id:type_id|| null,
+                    type
                 },
             });
     
@@ -62,7 +63,7 @@ const FilterPropertyScreen = ({ route,navigation }) => {
     // Ensure fetchFilteredProperties is called whenever `post_id` or `location_id` changes
     useEffect(() => {
         fetchFilteredProperties();
-    }, [post_id, location_id]);
+    }, [post_id, location_id,category_id,type_id,type]);
     
      // Dependency array to re-fetch when post_id or location_id change
     // Dependenc
@@ -79,6 +80,9 @@ const FilterPropertyScreen = ({ route,navigation }) => {
     return (
         <View>
             <View style={styles.line}>
+            <TouchableOpacity onPress={()=>navigation.goBack()}>
+            <MaterialCommunityIcons name="less-than" size={18}  style={styles.icon}/>
+            </TouchableOpacity>
                 <Text style={styles.text}>PropertyList</Text>
                 <Icon name="home" size={24} color={"#FFFFFF"} style={styles.homeicon}></Icon>
             </View>
@@ -104,8 +108,7 @@ const FilterPropertyScreen = ({ route,navigation }) => {
                 showsVerticalScrollIndicator={false}
                 initialScrollIndex={ind}
                 renderItem={({ item }) => {
-                    const firstImage = item.images.length > 0 ? item.images[0].images : null;
-                    console.log(firstImage);
+                    
                     return (
                         <TouchableOpacity
                             style={{
@@ -128,7 +131,7 @@ const FilterPropertyScreen = ({ route,navigation }) => {
                             </TouchableOpacity>
 
                             <Image
-                               source={{ uri: `https://shelterseeker.projectflux.online/api/properties${firstImage}` }}
+                               source={{ uri: item.image }}
                                 style={{
                                     width: 100,
                                     height: '90%',
