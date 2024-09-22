@@ -119,7 +119,7 @@ const PropertyListScreen = ({ route,navigation }) => {
             </TouchableOpacity>
             </View>
         ) : (
-            <FlatList style={{ marginBottom: 100, backgroundColor: '#FFFFFF' }}
+            <FlatList style={{ marginBottom: 150, backgroundColor: '#FFFFFF' }}
 
                 data={properties}
                 keyExtractor={(item) => item.id.toString()}

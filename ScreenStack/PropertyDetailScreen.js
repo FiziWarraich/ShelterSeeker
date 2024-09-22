@@ -50,7 +50,7 @@ const PropertyDetailScreen = ({ route }) => {
                 {property.description || 'No description available'}
               </Text>
             </View>
-            <View style={{height:500}}>
+            <View style={{height:500,width:500,}}>
               <GoogleMapView
                latitude={parseFloat(property.location_latitude)}
                longitude={parseFloat(property.location_longitude)}
