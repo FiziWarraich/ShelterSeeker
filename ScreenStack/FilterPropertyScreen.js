@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState,  } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Linking, Alert, Modal,ActivityIndicator } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -11,10 +11,7 @@ const FilterPropertyScreen = ({ route,navigation }) => {
     const [properties, setProperties] = useState([]);
     const number = '+923007406322'
     const message = "hello there!!"
-    const listRef = useRef();
     const [ind, setInd] = useState(0);
-    const [visible, setVisible] = useState(false);
-    const [data, setData] = useState([]);
     const [error, setError] = useState();
     const [selectedFilter, setSelectedFilter] = useState(0);
     const [loading, setLoading] = useState(true);
@@ -87,19 +84,6 @@ const FilterPropertyScreen = ({ route,navigation }) => {
                 <Text style={styles.text}>PropertyList</Text>
                 <Icon name="home" size={24} color={"#FFFFFF"} style={styles.homeicon}></Icon>
             </View>
-
-            <View style={styles.container}>
-                <TouchableOpacity style={styles.btn} onPress={() => navigation.navigate('Filters')}>
-                    <MaterialCommunityIcons name="filter-outline" size={18} color='#FFFFFF' style={styles.icon} />
-                    <Text style={styles.btntext}>Filters</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.btn} onPress={() => {
-                    setVisible(true);
-                }}>
-                    <MaterialCommunityIcons name="filter-variant" size={20} color='#FFFFFF' style={styles.icon} />
-                    <Text style={styles.btntext}>Sort</Text>
-                </TouchableOpacity>
-            </View>
             {loading ? (
             <ActivityIndicator size="large" color="#0000ff" />
         ) : properties.length === 0 ? (
@@ -117,7 +101,6 @@ const FilterPropertyScreen = ({ route,navigation }) => {
 
                 data={properties}
                 keyExtractor={(item) => item.id.toString()}
-                ref={listRef}
                 showsVerticalScrollIndicator={false}
                 initialScrollIndex={ind}
                 renderItem={({ item }) => {
@@ -223,88 +206,7 @@ const FilterPropertyScreen = ({ route,navigation }) => {
                 }}
             />
         ) }
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={visible}
-                onRequestClose={() => {
-                    setVisible(!visible);
-                }}>
-                <View
-                    style={{
-                        flex: 1,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'rgba(0,0,0,.5)',
-                    }}>
-                    <View
-                        style={{
-                            width: '80%',
-                            height: 150,
-                            borderRadius: 10,
-                            backgroundColor: '#fff',
-                        }}>
-                        <TouchableOpacity
-                            style={{
-                                width: '100%',
-                                height: 50,
-                                borderBottomWidth: 0.5,
-                                justifyContent: 'center',
-                                paddingLeft: 20,
-                            }}
-                            onPress={() => {
-                                setSelectedFilter(1);
-                                let tempList = properties.sort((a, b) =>
-                                    a.location > b.location ? 1 : -1,
-                                );
-                                setData(tempList);
-                                listRef.current.scrollToIndex({ animated: true, index: 0 });
-                                setVisible(false);
-                            }}>
-                            <Text style={{ fontSize: 18, color: '#000' }}>
-                                Sort By Name
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={{
-                                width: '100%',
-                                height: 50,
-                                borderBottomWidth: 0.5,
-                                justifyContent: 'center',
-                                paddingLeft: 20,
-                            }}
-                            onPress={() => {
-                                setSelectedFilter(2);
-                                setData(properties.sort((a, b) => a.title - b.title));
-                                listRef.current.scrollToIndex({ animated: true, index: 0 });
-                                setVisible(false);
-                            }}>
-                            <Text style={{ fontSize: 18, color: '#000' }}>
-                                Low to High Price
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={{
-                                width: '100%',
-                                height: 50,
-                                borderBottomWidth: 0.5,
-                                justifyContent: 'center',
-                                paddingLeft: 20,
-                            }}
-                            onPress={() => {
-                                setSelectedFilter(3);
-                                setData(properties.sort((a, b) => b.title - a.title));
-                                listRef.current.scrollToIndex({ animated: true, index: 0 });
-                                setVisible(false);
-                            }}>
-                            <Text style={{ fontSize: 18, color: '#000' }}>
-                                Hight to Low Price
-                            </Text>
-                        </TouchableOpacity>
-
-                    </View>
-                </View>
-            </Modal>
+           
         </View>
     )
 };
