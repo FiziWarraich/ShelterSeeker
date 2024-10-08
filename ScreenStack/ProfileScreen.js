@@ -75,13 +75,7 @@ console.log(name)
         </View>
       </View>
       
-        <TouchableOpacity>
-        <View style={styles.row}>
-        <MaterialCommunityIcons name="contacts-outline" size={25} color='#43CBAC' style={styles.rowicon}></MaterialCommunityIcons>
-        <MaterialCommunityIcons name="greater-than" size={15} color='black' style={styles.rowicon2}></MaterialCommunityIcons>
-          <Text style={styles.textfield} >Contact us</Text>
-        </View>
-        </TouchableOpacity>
+        
         <TouchableOpacity onPress={()=>setshowModal(true)}>
         <View style={styles.row}>
         <AntDesign name="like2" size={25} color='#43CBAC' style={styles.rowicon}></AntDesign>
@@ -97,11 +91,7 @@ console.log(name)
           <Text style={styles.textfield} >Terms and policy</Text>
         </View>
          </TouchableOpacity>
-        <View style={styles.row}>
-        <MaterialCommunityIcons name="alert-circle-outline" size={25} color='#43CBAC' style={styles.rowicon}></MaterialCommunityIcons>
-          <Text style={styles.textfield} >App Version</Text>
-          <Text style={styles.textfield} >4.4.5</Text>
-        </View>
+       
        {isLoggedIn?(
         <TouchableOpacity style={styles.button} onPress={handleLogout}>
         <Text style={styles.btntext1}>Log out</Text>
@@ -190,11 +180,20 @@ const styles = StyleSheet.create
     },
     profile:
     {
-    height:70,
-    width:400,
-    backgroundColor:'#191645',
-    justifyContent:'center',
-    alignItems:'center'
+      flexDirection:'row',
+      height:70,
+      width:'100%',
+      alignItems:'center',
+      borderBottomWidth:1.5,
+      marginBottom: 20,
+      backgroundColor:'#191645',
+      justifyContent:'center',
+      alignContent:'center'
+    },
+    iconback:
+    {
+     color:'#FFFFFF',
+     marginLeft:-110
     },
     header:
     {
@@ -212,7 +211,7 @@ const styles = StyleSheet.create
     },
     profileicon:
     {
-      right:55,
+      right:25,
       position:'absolute'
     },
     loginText: {

@@ -9,11 +9,11 @@ import React from 'react';
 import { Text} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { FavoritesProvider } from './Context/FavoritesContext';
 import SplashScreen from './ScreenStack/SplashScreen';
 import HomeScreen from './ScreenStack/HomeScreen';
 import Tabs from './ScreenStack/TabScreen';
 import LoginScreen from './ScreenStack/LoginScreen';
-import BuyListingScreen from './ScreenStack/BuyListingScreen';
 import SignupScreen from './ScreenStack/SignupScreen';
 import CalculatorScreen from './ScreenStack/CalculatorScreen';
 import ProfileScreen from './ScreenStack/ProfileScreen';
@@ -25,12 +25,12 @@ const Stack=createNativeStackNavigator();
 const App=()=>
 {
 return(
+  
   <NavigationContainer>
     <Stack.Navigator screenOptions={{headerShown:false}}>
       <Stack.Screen name='Splash' component={SplashScreen}/>
       <Stack.Screen name='Tab' component={Tabs}/>
       <Stack.Screen name='Home' component={HomeScreen}/>
-      <Stack.Screen name='BuyListing' component={BuyListingScreen}/>
       <Stack.Screen name='Login' component={LoginScreen}/>
       <Stack.Screen name='Signup' component={SignupScreen}/>
       <Stack.Screen name='Calculator' component={CalculatorScreen}/>
@@ -41,6 +41,7 @@ return(
       <Stack.Screen name='FilterProperty' component={FilterPropertyScreen}/>
     </Stack.Navigator>
   </NavigationContainer>
+  
 )
 };
 

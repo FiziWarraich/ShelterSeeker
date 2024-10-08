@@ -5,7 +5,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import axios from "axios";
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const PropertyListScreen = ({ route,navigation }) => {
     const { post_id, location_id ,type} = route.params; // Extracting the post_id and location_id from the route params
     const [properties, setProperties] = useState([]);
@@ -18,7 +18,7 @@ const PropertyListScreen = ({ route,navigation }) => {
     const [error, setError] = useState();
     const [selectedFilter, setSelectedFilter] = useState(0);
     const [loading, setLoading] = useState(true);
-
+    const [favoriteProperties, setFavoriteProperties] = useState([]);
     const fetchFilteredProperties = async () => {
         setLoading(true); // Show loading indicator
     
@@ -68,13 +68,76 @@ const PropertyListScreen = ({ route,navigation }) => {
     };
     
     // Ensure fetchFilteredProperties is called whenever `post_id` or `location_id` changes
-    useEffect(() => {
-        fetchFilteredProperties();
-    }, [post_id, location_id]);
-    
+   
      // Dependency array to re-fetch when post_id or location_id change
     // Dependenc
- 
+
+     // Step 1: Token ko retrieve karne ka function
+     const setAuthToken = async () => {
+        const token = await AsyncStorage.getItem('token'); // Replace 'token' with your actual token key
+        if (token) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Set token in headers
+        }
+    };
+
+    // Fetch favorite properties on component mount
+    const getFavorites = async () => {
+        try {
+            const response = await axios.get('https://shelterseeker.projectflux.online/api/show'); // Get favorites from backend
+            setFavoriteProperties(response.data.map(item => item.id)); // Assuming response contains an array of favorite objects
+        } catch (error) {
+            console.error('Error fetching favorites:', error);
+        }
+    };
+
+    // Add property to favorites
+    const addFavorite = async (propertyId) => {
+        try {
+            // 1. Add the property to the favorites via API
+            await axios.post('https://shelterseeker.projectflux.online/api/add', { property_id: propertyId });
+    
+            // 2. Update local state
+            const updatedFavorites = [...favoriteProperties, propertyId];
+            setFavoriteProperties(updatedFavorites);
+    
+            // 3. Save updated favorites to AsyncStorage
+            await AsyncStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+        } catch (error) {
+            console.error('Error adding favorite:', error);
+        }
+    };
+    
+
+    // Remove property from favorites
+   // Remove property from favorites
+const removeFavorite = async (propertyId) => {
+    try {
+        await axios.delete('https://shelterseeker.projectflux.online/api/delete', {
+            data: { property_id: propertyId } // Send property_id in the request body
+        });
+        setFavoriteProperties(favoriteProperties.filter(id => id !== propertyId));
+    } catch (error) {
+        console.error('Error removing favorite:', error);
+    }
+};
+
+
+    // Toggle favorite
+    const toggleFavorite = (propertyId) => {
+        if (favoriteProperties.includes(propertyId)) {
+            removeFavorite(propertyId);
+        } else {
+            addFavorite(propertyId);
+        }
+    };
+
+    useEffect(() => {
+        fetchFilteredProperties();
+        setAuthToken(); // Set the auth token before fetching properties and favorites
+        getFavorites();
+    }, [post_id, location_id]);
+    
+
     const openUrl = async (url) => {
         const isSupported = await Linking.canOpenURL(url);
         if (isSupported) {
@@ -88,7 +151,7 @@ const PropertyListScreen = ({ route,navigation }) => {
         <View>
             <View style={styles.line}>
             <TouchableOpacity onPress={()=>navigation.goBack()}>
-            <MaterialCommunityIcons name="less-than" size={18}  style={styles.iconback}/>
+            <MaterialCommunityIcons name="keyboard-backspace" size={25}  style={styles.iconback}/>
             </TouchableOpacity>
                 <Text style={styles.text}>Property List</Text>
                 <Icon name="home" size={24} color={"#FFFFFF"} style={styles.homeicon}></Icon>
@@ -127,6 +190,8 @@ const PropertyListScreen = ({ route,navigation }) => {
                 showsVerticalScrollIndicator={false}
                 initialScrollIndex={ind}
                 renderItem={({ item }) => {
+                    const isFavorite = favoriteProperties.includes(item.id); // Check if property is favorite
+
                     return (
                         <TouchableOpacity
                             style={{
@@ -144,9 +209,11 @@ const PropertyListScreen = ({ route,navigation }) => {
                             }}
                             onPress={() => navigation.navigate('PropertyDetail', { property: item })}
                             >
-                            <TouchableOpacity style={styles.favicon}>
-                                <Icon name="heart-o" size={24} color={"#191645"}></Icon>
-                            </TouchableOpacity>
+                            <TouchableOpacity
+                                    style={styles.favicon}
+                                    onPress={() => toggleFavorite(item.id)}>
+                                    <Icon name={favoriteProperties.includes(item.id) ? "heart" : "heart-o"} size={24} color={"#191645"} />
+                                </TouchableOpacity>
 
                             <Image
                                 source={{ uri:item.image }}
