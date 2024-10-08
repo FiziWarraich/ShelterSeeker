@@ -84,11 +84,14 @@ const PropertyListScreen = ({ route,navigation }) => {
     const getFavorites = async () => {
         try {
             const response = await axios.get('https://shelterseeker.projectflux.online/api/show'); // Get favorites from backend
-            setFavoriteProperties(response.data.map(item => item.id)); // Assuming response contains an array of favorite objects
+            const favoriteData = response.data.favorites; // Access 'favorites' array from response
+            setFavoriteProperties(favoriteData.map(item => item.id)); // Map through the 'favorites' array to extract IDs
         } catch (error) {
             console.error('Error fetching favorites:', error);
         }
     };
+    
+    
 
     // Add property to favorites
     const addFavorite = async (propertyId) => {
@@ -193,7 +196,7 @@ const removeFavorite = async (propertyId) => {
                     const isFavorite = favoriteProperties.includes(item.id); // Check if property is favorite
 
                     return (
-                        <TouchableOpacity
+                        <View
                             style={{
                                 width: '95%',
                                 height: 190,
@@ -207,14 +210,14 @@ const removeFavorite = async (propertyId) => {
                                 marginTop: 20,
                                 elevation: 15
                             }}
-                            onPress={() => navigation.navigate('PropertyDetail', { property: item })}
+                           
                             >
                             <TouchableOpacity
                                     style={styles.favicon}
                                     onPress={() => toggleFavorite(item.id)}>
                                     <Icon name={favoriteProperties.includes(item.id) ? "heart" : "heart-o"} size={24} color={"#191645"} />
                                 </TouchableOpacity>
-
+                                <TouchableOpacity  onPress={() => navigation.navigate('PropertyDetail', { property: item })}>
                             <Image
                                 source={{ uri:item.image }}
                                 style={{
@@ -224,6 +227,7 @@ const removeFavorite = async (propertyId) => {
                                     borderRadius: 10,
                                 }}
                             />
+                            </TouchableOpacity>
                             <View style={{ width: '80%' }}>
                                 <Text
                                     style={{ fontWeight: '600', marginLeft: 10, color: 'black', fontSize: 16 }}>
@@ -290,7 +294,8 @@ const removeFavorite = async (propertyId) => {
                                     </TouchableOpacity>
                                 </View>
                             </View>
-                        </TouchableOpacity>
+                         
+                        </View>
                     );
                 }}
             />

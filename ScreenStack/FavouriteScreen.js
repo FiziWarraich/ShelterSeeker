@@ -20,14 +20,12 @@ const FavoriteScreen = () => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Set token in headers
         }
     };
-  
     const fetchFavorites = async () => {
         setLoading(true); // Start loading
         try {
             const favoritesData = await AsyncStorage.getItem('favorites');
             const favorites = favoritesData ? JSON.parse(favoritesData) : [];
-            console.log("Favorites from AsyncStorage:", favorites); // Ensure IDs are stored correctly
-    
+            
             const token = await AsyncStorage.getItem('token');
             const response = await axios.get('https://shelterseeker.projectflux.online/api/show', {
                 headers: {
@@ -37,8 +35,9 @@ const FavoriteScreen = () => {
     
             console.log("API Response Data:", response.data);
     
-            const filteredFavorites = response.data.filter(property => {
-                const isFavorite = favorites.includes(property.id); // Use direct comparison
+            // Accessing the favorites array from the response
+            const filteredFavorites = response.data.favorites.filter(property => {
+                const isFavorite = favorites.includes(property.id);
                 console.log('Checking property:', property.id, 'isFavorite:', isFavorite);
                 return isFavorite; // Only include favorite properties
             });
@@ -51,6 +50,7 @@ const FavoriteScreen = () => {
             setLoading(false); // Stop loading
         }
     };
+    
     
     
     
