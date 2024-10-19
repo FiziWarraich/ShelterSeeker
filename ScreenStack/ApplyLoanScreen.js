@@ -5,11 +5,11 @@ import { View, Text, StyleSheet, Image, FlatList,TouchableOpacity ,Linking} from
 
 
 const ApplyLoanScreen = ({ navigation }) => {
-  const hbl='https://www.hbl.com/';
+  const hbl='https://www.hbl.com/personal/loans/apply-for-personal-loan';
   const meezan='https://www.meezanbank.com/';
-  const ubl='https://www.ubldigital.com/';
+  const mcb='https://www.mcb.com.pk/personal/consumer-loans/mcb-home-loan';
   const nbp='https://www.nbp.com.pk/';
-  const alfalah='https://www.bankalfalah.com/';
+  const alfalah='https://www.bankalfalah.com/personal-banking/loans/alfalah-home-finance/alfalah-ghar-asaan/';
   const allied='https://www.abl.com/';
   const openUrl = async (url) => {
     const isSupported = await Linking.canOpenURL(url);
@@ -63,11 +63,11 @@ const ApplyLoanScreen = ({ navigation }) => {
         <View style={styles.row}>
         <Image style={{height:80,width:80,marginLeft:10,borderRadius:10}} source={require('../assests/UBL.png')}/>
         <View style={{width:'50%'}}>
-          <Text style={styles.textfield} >UBL</Text>
+          <Text style={styles.textfield} >MCB</Text>
           
           </View>
           <TouchableOpacity style={{ height: 35, width: 100, backgroundColor: '#191645', borderRadius: 30, justifyContent: 'center',right:15 }} onPress={() => {
-               openUrl(ubl)
+               openUrl(mcb)
                 }} >
           <Text style={{
                         fontSize: 16, color: '#FFFFFF',alignSelf:'center',

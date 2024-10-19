@@ -5,7 +5,7 @@ import axios from "axios";
 
 const SearchScreen = ({navigation,route}) => {
   const { post_id, location_id,type } = route.params ||{};
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("Residential");
   const [selectedType, setSelectedType] = useState(null);
   const [Category, setCategory] = useState([]); // Store categories from API
   const [types, setTypes] = useState({ });
@@ -83,7 +83,7 @@ const SearchScreen = ({navigation,route}) => {
     <View style={styles.container}>
         <View style={styles.header}>
         <TouchableOpacity onPress={()=>navigation.goBack()}>
-        <MaterialCommunityIcons name="less-than" size={18}  style={styles.icon}/>
+        <MaterialCommunityIcons name="keyboard-backspace" size={25}  style={styles.icon}/>
         </TouchableOpacity>
         <Text style={styles.Filtertext}>Filters</Text>
         </View>

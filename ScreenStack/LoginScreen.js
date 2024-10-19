@@ -54,16 +54,20 @@ const LoginScreen = ({navigation}) => {
             }
           }).then((res)=>{
            console.log("res+++",res.data)
-          const name=res.data.user.name;
-             if(name){
-              AsyncStorage.setItem('name', name);
-              console.log(name)
-              Alert.alert('Login Successfully', 'name  found in the response.');
-              AsyncStorage.setItem('isLoggedIn', 'true');
-              navigation.replace('Profile');
-             }else{
-              Alert.alert('Login Error', 'name not found in the response.');
-             }
+           const token = res.data.access_token; // Accessing the access_token
+            const name = res.data.user.name;
+
+            if (name && token) {
+                // Save token and user name to AsyncStorage
+                 AsyncStorage.setItem('token', token);
+                 AsyncStorage.setItem('name', name);
+                console.log(name);
+                Alert.alert('Login Successfully');
+                 AsyncStorage.setItem('isLoggedIn', 'true');
+                navigation.replace('Tab');
+            } else {
+                Alert.alert('Login Error', 'Name or token not found in the response.');
+            }
           
           }).catch((error)=>{
             console.log("error raised",error)
@@ -125,7 +129,7 @@ const LoginScreen = ({navigation}) => {
             fontStyle: 'italic',
           }}>
             <TouchableOpacity style={styles.button} onPress={() => handleRegister()} >
-              <Text style={styles.buttonText} >Sign In</Text>
+              <Text style={styles.buttonText} >Log In</Text>
             </TouchableOpacity>
           </View>
          
