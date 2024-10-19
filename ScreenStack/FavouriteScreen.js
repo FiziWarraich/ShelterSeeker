@@ -88,16 +88,16 @@ const FavoriteScreen = () => {
             fetchFavorites(); // Fetch data when the screen comes into focus
         }, [])
     );
-    if (loading) {
-        return <ActivityIndicator size="large" color="#0000ff" />;
-    }
-
+   
     return (
         <View >
              <View style={styles.line}>
                 <Text style={styles.text}>Favourite List</Text>
                 <Icon name="heart" size={24} color={"#FFFFFF"} style={styles.homeicon}></Icon>
             </View>
+            {loading ? (
+                <ActivityIndicator size="large" color="#0000ff" style={{marginTop: 15}}/>
+            ) : favoriteProperties.length > 0 ? (
         <FlatList style={{ marginBottom: 150, backgroundColor: '#FFFFFF' }}
 
         data={favoriteProperties}
@@ -209,6 +209,9 @@ const FavoriteScreen = () => {
             );
         }}
     />
+) : (
+    <Text style={styles.errorText}>No favorites available.</Text>
+)}
     </View>
     )}
     const styles = StyleSheet.create

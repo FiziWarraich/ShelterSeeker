@@ -6,7 +6,7 @@
  */
 
 import React, { useState,useEffect } from 'react';
-import { Text, View, Button, StyleSheet, TextInput, TouchableOpacity, Image ,Alert} from 'react-native'
+import { Text, View, Button, StyleSheet, TextInput, TouchableOpacity, Image ,Alert,ScrollView,KeyboardAvoidingView,} from 'react-native'
 import Icon from 'react-native-vector-icons/Feather';
 import { Header } from 'react-native/Libraries/NewAppScreen';
 import axios from "axios";
@@ -84,8 +84,12 @@ const SignupScreen = ({navigation}) => {
   };
 
   return (
-    
-      <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+    >
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.header}>
           <Text style={styles.textstyle} >Here's your first step with us!</Text>
           <Image style={styles.image} source={require("../assests/logo.png")} />
@@ -160,11 +164,17 @@ const SignupScreen = ({navigation}) => {
           <Text style={styles.footer}>Already have an account?<Text style={styles.footerText}> Sign in</Text>
           </Text>
         </TouchableOpacity>
-      </View>
+        </ScrollView>
+        </KeyboardAvoidingView>
   );
 }
 const styles = StyleSheet.create
   ({
+    
+      scrollContainer: {
+        flexGrow: 1,
+        justifyContent: 'center',
+      },
     container: {
       flex: 1,
       width:'100%',
@@ -177,7 +187,7 @@ const styles = StyleSheet.create
       display: 'flex',
       flexDirection: 'row',
       position: 'center',
-      height: 200,
+      height: 150,
     },
     textstyle:
     {

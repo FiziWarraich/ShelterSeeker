@@ -6,7 +6,7 @@
  */
 
 import React, { useState } from 'react';
-import { Text, View, Button, StyleSheet, TextInput, TouchableOpacity, Image,Alert } from 'react-native'
+import { Text, View, Button, StyleSheet, TextInput, TouchableOpacity, Image,Alert,KeyboardAvoidingView,Keyboard,TouchableWithoutFeedback,ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from "axios";
@@ -87,8 +87,12 @@ const LoginScreen = ({navigation}) => {
   };
 
   return (
-       
-      <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={styles.container}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+    >
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.header}>
           <Text style={styles.textstyle} >Already have an account!</Text>
           <Image style={styles.image} source={require("../assests/logo.png")} />
@@ -147,12 +151,16 @@ const LoginScreen = ({navigation}) => {
           <Text style={[styles.footer ,styles.Text]}>New User?<Text style={styles.footerText}> Sign Up</Text>
           </Text>
         </TouchableOpacity>
-      </View>
-    
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 const styles = StyleSheet.create
   ({
+    scrollContainer: {
+      flexGrow: 1,
+      justifyContent: 'center',
+    },
     container: {
       flex: 1,
       width:'100%',
@@ -165,7 +173,7 @@ const styles = StyleSheet.create
       display: 'flex',
       flexDirection: 'row',
       position: 'center',
-      height: 250,
+      height: 200,
     },
     textstyle:
     {
