@@ -155,13 +155,13 @@ const styles = StyleSheet.create
       marginTop:10,
       backgroundColor:'#FFFFFF',
       elevation:5,
-      shadowColor:'black'
+      shadowColor:'green'
 
     },
     
     textfield:
     {
-     color:'black',
+     color:'green',
      alignSelf:'flex-start',
      fontSize:16,
      fontWeight: '600',
