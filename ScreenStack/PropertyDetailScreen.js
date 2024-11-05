@@ -3,6 +3,7 @@ import React ,{useEffect} from 'react';
 import { View, Text, Image, StyleSheet, ScrollView ,FlatList} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import GoogleMapView from '../Components/GoogleMapView';
+import { WebView } from 'react-native-webview';
 
 const PropertyDetailScreen = ({ route }) => {
   const { property } = route.params;
@@ -57,11 +58,23 @@ const PropertyDetailScreen = ({ route }) => {
                
               />
             </View>
+        <View style={{height:700,width:400,right:20}}>
+
+      <WebView
+        source={{ uri: 'https://cdn.botpress.cloud/webchat/v2.2/shareable.html?configUrl=https://files.bpcontent.cloud/2024/10/06/18/20241006181229-IPONSC5C.json' }}
+        style={{ flex: 1 }}
+        javaScriptEnabled={true} // JavaScript ko enable karein
+        domStorageEnabled={true} // DOM storage enable karein
+      />
+    </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  container1: {
+    flex: 1,
+  },
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',

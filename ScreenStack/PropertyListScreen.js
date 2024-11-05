@@ -215,7 +215,7 @@ const removeFavorite = async (propertyId) => {
                             <TouchableOpacity
                                     style={styles.favicon}
                                     onPress={() => toggleFavorite(item.id)}>
-                                    <Icon name={favoriteProperties.includes(item.id) ? "heart" : "heart-o"} size={24} color={"#191645"} />
+                                    <Icon name={favoriteProperties.includes(item.id) ? "heart" : "heart-o"} size={26} color={"#191645"} />
                                 </TouchableOpacity>
                                 <TouchableOpacity  onPress={() => navigation.navigate('PropertyDetail', { property: item })}>
                             <Image
@@ -260,6 +260,7 @@ const removeFavorite = async (propertyId) => {
                                         marginTop: 10,
                                         marginLeft: 5
                                     }}>
+                            {post_id === 1 && (
                                     <TouchableOpacity style={{ height: 35, width: 80, backgroundColor: '#191645', borderRadius: 10, justifyContent: 'center' }} 
                                     onPress={() => navigation.navigate('Calculator',{ property: item })}>
                                         <Text
@@ -272,6 +273,7 @@ const removeFavorite = async (propertyId) => {
                                             Calculator
                                         </Text>
                                     </TouchableOpacity>
+                                       )}
                                     <TouchableOpacity style={{ height: 35, width: 70, backgroundColor: '#191645', borderRadius: 10, justifyContent: "center", marginLeft: 5 }} 
                                     onPress={() => {
                                         Linking.openURL(`tel:${number}`)
