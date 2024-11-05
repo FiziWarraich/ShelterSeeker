@@ -5,9 +5,9 @@ import { StyleSheet, Text, View,Image } from 'react-native';
 const SplashScreen = ({navigation}) => {
   
     //<LinearGradient className="flex-1 justify-center items-center" colors={['#43CBAC', '#191645']}
-    //locations={[0.43, 0.65]}
-   // useAngle={true}
-    //angle={180}>
+    //locations={[0.43, 0.65]}//
+   // useAngle={true}//
+    //angle={180}>//
     setTimeout(()=>
     {
 navigation.replace('Login');
