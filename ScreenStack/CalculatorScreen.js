@@ -153,7 +153,7 @@ textInput:
   backgroundColor: '#43CBAC',
   borderWidth: 1.5,
   borderColor: '#191645',
-  borderRadius: 20,
+  borderRadius: 10,
   width: 300,
   height: 50,
   margin: 20,
