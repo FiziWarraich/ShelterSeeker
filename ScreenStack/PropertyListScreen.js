@@ -165,12 +165,7 @@ const removeFavorite = async (propertyId) => {
                     <MaterialCommunityIcons name="filter-outline" size={18} color='#FFFFFF' style={styles.icon} />
                     <Text style={styles.btntext}>Filters</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn} onPress={() => {
-                    setVisible(true);
-                }}>
-                    <MaterialCommunityIcons name="filter-variant" size={20} color='#FFFFFF' style={styles.icon} />
-                    <Text style={styles.btntext}>Sort</Text>
-                </TouchableOpacity>
+                
             </View>
             {loading ? (
             <ActivityIndicator size="large" color="#0000ff" />

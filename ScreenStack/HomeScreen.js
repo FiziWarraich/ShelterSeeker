@@ -153,37 +153,39 @@ const HomeScreen = ({ navigation }) => {
                      <View style={{
                         flexWrap: 'wrap', flexDirection: 'row',
                         justifyContent: 'center', position: 'absolute',
-                        height: 100, width: 234,
+                        height: 100, width: 230,
                         right: 21, top: -50
 
                      }}>
-                        {searchText.length > 0 && filterData.length > 0 && (
-                           <FlatList
-                              data={filterData} // The data to render
-                              renderItem={renderLocationItem} // Function to render each item
-                              keyExtractor={(item) => item.id.toString()} // Unique key for each item
-
-                           />
-                        )
-                        }
+                         {filterData.length > 0 && (
+               <View>
+                  {filterData.map((item) => (
+                     <TouchableOpacity key={item.id} style={styles.location} onPress={() => setSearchText(item.property_location)}>
+                        <Text style={styles.locationtext}>{item.property_location}</Text>
+                     </TouchableOpacity>
+                  ))}
+               </View>
+            )}
 
                      </View>
 
                   </View>
-
+                 
 
                </View>
+              
             </View>
-
+            
 
          </View>
+
+        
          <View>
-
-
+       
 
          </View>
-         <HomeCards/>
          
+         <HomeCards/>
       </ScrollView>
 
    );
@@ -296,7 +298,8 @@ const styles = StyleSheet.create
          color: 'black',
          backgroundColor: '#FFFFFF',
          padding: 5,
-         fontSize: 16,
+         fontSize: 17,
+         width:230
       },
 
       card:

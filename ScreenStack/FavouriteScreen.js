@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
 
-const FavoriteScreen = () => {
+const FavoriteScreen = ({navigation}) => {
     const [favoriteProperties, setFavoriteProperties] = useState([]);
     const [loading, setLoading] = useState(true);
     const listRef = useRef();
@@ -210,7 +210,15 @@ const FavoriteScreen = () => {
         }}
     />
 ) : (
-    <Text style={styles.errorText}>No favorites available.</Text>
+    <View style={styles.error}>
+    <Image style={{height:70,top:180,width:70,resizeMode:'cover',position:'absolute',}} source={require("../assests/sad.png")} />
+    <Text style={styles.errorText}>No Available Favorites'sProperty</Text>
+    <TouchableOpacity style={{borderRadius:5,top:280,borderWidth:1,height:40,width:100,justifyContent:'center',backgroundColor:'#191645'}}
+     onPress={()=>navigation.goBack()} 
+>
+  <Text style={{color:'#FFFFFF',fontSize:20,alignSelf:'center'}} >Ok</Text>
+</TouchableOpacity>
+</View>
 )}
     </View>
     )}

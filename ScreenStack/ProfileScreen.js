@@ -43,8 +43,10 @@ const ProfileScreen = ({ navigation }) => {
     if (feedback) {
     console.log('Feedback submitted:', feedback);
     Alert.alert('Feedback Submitted', 'Thank you for your feedback!');
+    navigation.goBack();
     setFeedback('');
     setshowModal(false);
+    
     }
   };
 console.log(name)
@@ -221,9 +223,9 @@ const styles = StyleSheet.create
       color: 'black',
     },
     loginnameText: {
-      top:20,
-      fontSize: 20,
-      fontWeight: '500',
+      top:15,
+      fontSize: 30,
+      fontWeight: 'bold',
       left: 20,
       color: 'black',
     },

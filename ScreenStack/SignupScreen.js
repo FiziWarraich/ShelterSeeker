@@ -27,7 +27,7 @@ const SignupScreen = ({navigation}) => {
     setIsPasswordVisible(!isPasswordVisible);
   };
   const validatePasswordLength = (password) => {
-    const minLength = 6; 
+    const minLength = 8; 
     return password.length >= minLength;
   };
   const handleRegister =async () => {
