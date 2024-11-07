@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React, { useState,useEffect } from 'react';
 import { Text, View, Button, StyleSheet, TextInput, TouchableOpacity, Image ,Alert,ScrollView,KeyboardAvoidingView,} from 'react-native'
 import Icon from 'react-native-vector-icons/Feather';
