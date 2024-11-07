@@ -9,7 +9,7 @@ const CalculatorScreen=({navigation,route})=>
  const [years, setYears] = useState();
   const [propertyPrice, setPropertyPrice] = useState();
   const [MonthlyInvestment, setMonthlyInvestment] = useState("");
- 
+  const [errorMessage, setErrorMessage] = useState("");
 
   const calculateYears = () => {
     
@@ -18,6 +18,15 @@ const CalculatorScreen=({navigation,route})=>
     const yearlyInvestment = totalInvestmentNeeded / totalYears;
     const monthlyInvestment = yearlyInvestment /12;
     setMonthlyInvestment(monthlyInvestment.toFixed(2));;
+  if (salary < monthlyInvestment) {
+      setErrorMessage("Your salary is not sufficient. Please increase the years or salary.");
+      setMonthlyInvestment("");
+    } else {
+      setErrorMessage(""); // Clear error if salary is sufficient
+      setMonthlyInvestment(monthlyInvestment.toFixed(2));
+    }
+
+    setshowModal(true); // Show modal regardless of outcome
   };
     return(
         <View style={styles.container}>
@@ -79,14 +88,16 @@ const CalculatorScreen=({navigation,route})=>
             visible={showModal}
             animationType="slide">
             <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-              <View style={{backgroundColor:'#D4D4D4', height:200,width:200,borderRadius:10}}>
-              {MonthlyInvestment !== null && (
+              <View style={{backgroundColor:'#D4D4D4', height:200,width:250,borderRadius:10}}>
+              {errorMessage ? (
+                  <Text style={styles.Modaltext}>{errorMessage}</Text>
+                ) : (
         <Text style={styles.Modaltext}>
           You need {MonthlyInvestment} monthly Investment to buy the property.
         </Text>
       )}
       <Image style={{height:80,width:80,resizeMode:'cover',position:'absolute',top:-50,alignSelf:'center'}} source={require("../assests/investment.png")} />
-       <TouchableOpacity style={{borderRadius:5,top:70,left:130,borderWidth:1,height:30,width:50}}
+       <TouchableOpacity style={{borderRadius:5,top:70,left:100,borderWidth:1,height:30,width:50}}
         onPress={()=>setshowModal(false)}    >
               <Text style={{color:'black',fontSize:16,alignSelf:'center'}} >Ok</Text>
             </TouchableOpacity>
