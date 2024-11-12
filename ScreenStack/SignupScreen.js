@@ -44,7 +44,7 @@ const SignupScreen = ({navigation}) => {
         Errors.password = 'Password is required';
         valid = false;
       } else if (!validatePasswordLength(password)) {
-        Errors.password = 'Password must be at least 6 characters long';
+        Errors.password = 'Password must be at least 8 characters long';
         valid = false;
       }else if (!/[A-Z]/.test(password)) Errors.password = 'Password must contain at least one uppercase letter', valid = false;
       else if (!/[a-z]/.test(password)) Errors.password = 'Password must contain at least one lowercase letter', valid = false;
