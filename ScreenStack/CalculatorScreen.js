@@ -19,7 +19,7 @@ const CalculatorScreen=({navigation,route})=>
     const monthlyInvestment = yearlyInvestment /12;
     setMonthlyInvestment(monthlyInvestment.toFixed(2));;
   if (salary < monthlyInvestment) {
-      setErrorMessage("Your salary is not sufficient. Please increase the years or salary.");
+      setErrorMessage("Your salary is not sufficient. Please increase the years.");
       setMonthlyInvestment("");
     } else {
       setErrorMessage(""); // Clear error if salary is sufficient

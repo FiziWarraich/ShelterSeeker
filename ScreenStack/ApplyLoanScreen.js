@@ -6,11 +6,11 @@ import { View, Text, StyleSheet, Image, FlatList,TouchableOpacity ,Linking} from
 
 const ApplyLoanScreen = ({ navigation }) => {
   const hbl='https://www.hbl.com/personal/loans/apply-for-personal-loan';
-  const meezan='https://www.meezanbank.com/';
+  const Albarakah='https://www.albaraka.com.pk/page/home-finance-calculator/';
   const mcb='https://www.mcb.com.pk/personal/consumer-loans/mcb-home-loan';
-  const nbp='https://www.nbp.com.pk/';
   const alfalah='https://www.bankalfalah.com/personal-banking/loans/alfalah-home-finance/alfalah-ghar-asaan/';
-  const allied='https://www.abl.com/';
+  const islamibank='https://bankislami.com.pk/muskun-home-financing/';
+  const allied='https://www.abl.com/personal/loans/';
   const openUrl = async (url) => {
     const isSupported = await Linking.canOpenURL(url);
     if (isSupported) {
@@ -46,13 +46,13 @@ const ApplyLoanScreen = ({ navigation }) => {
         
         
         <View style={styles.row}>
-        <Image style={{height:80,width:80,marginLeft:10,borderRadius:10}} source={require('../assests/meezan.jpeg')}/>
+        <Image style={{height:80,width:80,marginLeft:10,borderRadius:10}} source={require('../assests/albarakah.png')}/>
         <View style={{width:'50%'}}>
-          <Text style={styles.textfield} >Meezan Bank</Text>
+          <Text style={styles.textfield} >Al Barakah</Text>
           
           </View>
           <TouchableOpacity style={{ height: 35, width: 100, backgroundColor: '#191645', borderRadius: 30, justifyContent: 'center',right:15 }} onPress={() => {
-                openUrl(meezan)
+                openUrl(Albarakah)
                 }} >
           <Text style={{
                         fontSize: 16, color: '#FFFFFF',alignSelf:'center',
@@ -61,7 +61,7 @@ const ApplyLoanScreen = ({ navigation }) => {
         </View>
          
         <View style={styles.row}>
-        <Image style={{height:80,width:80,marginLeft:10,borderRadius:10}} source={require('../assests/UBL.png')}/>
+        <Image style={{height:80,width:80,marginLeft:10,borderRadius:10}} source={require('../assests/mcb.jpeg')}/>
         <View style={{width:'50%'}}>
           <Text style={styles.textfield} >MCB</Text>
           
@@ -76,20 +76,6 @@ const ApplyLoanScreen = ({ navigation }) => {
         </View>
          
         <View style={styles.row}>
-        <Image style={{height:80,width:80,marginLeft:10,borderRadius:10}} source={require('../assests/Nbp.jpeg')}/>
-        <View style={{width:'50%'}}>
-          <Text style={styles.textfield} >National Bank of Pakistan</Text>
-          
-          </View>
-          <TouchableOpacity style={{ height: 35, width: 100, backgroundColor: '#191645', borderRadius: 30, justifyContent: 'center',right:15 }} onPress={() => {
-                 openUrl(nbp)
-                }} >
-          <Text style={{
-                        fontSize: 16, color: '#FFFFFF',alignSelf:'center',
-                      }}>Press Here</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.row}>
         <Image style={{height:80,width:80,marginLeft:10,borderRadius:10}} source={require('../assests/alfalah.jpeg')}/>
         <View style={{width:'50%'}}>
           <Text style={styles.textfield} >Alfalah Bank</Text>
@@ -97,6 +83,20 @@ const ApplyLoanScreen = ({ navigation }) => {
           </View>
           <TouchableOpacity style={{ height: 35, width: 100, backgroundColor: '#191645', borderRadius: 30, justifyContent: 'center',right:15 }} onPress={() => {
                  openUrl(alfalah)
+                }} >
+          <Text style={{
+                        fontSize: 16, color: '#FFFFFF',alignSelf:'center',
+                      }}>Press Here</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.row}>
+        <Image style={{height:80,width:80,marginLeft:10,borderRadius:10}} source={require('../assests/islami.jpeg')}/>
+        <View style={{width:'50%'}}>
+          <Text style={styles.textfield} >Bank Islami</Text>   
+          </View>
+          <TouchableOpacity style={{ height: 35, width: 100, backgroundColor: '#191645', borderRadius: 30, justifyContent: 'center',right:15 }} onPress={() => {
+                 openUrl(islamibank)
                 }} >
           <Text style={{
                         fontSize: 16, color: '#FFFFFF',alignSelf:'center',

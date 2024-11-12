@@ -1,5 +1,5 @@
 import React, { useEffect, useState,useRef } from 'react';
-import { View, FlatList, Text, TouchableOpacity, ActivityIndicator,Modal,Image ,StyleSheet} from 'react-native';
+import { View, FlatList, Text, TouchableOpacity, ActivityIndicator,Modal,Image ,StyleSheet,Linking} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -7,7 +7,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import { useFocusEffect } from '@react-navigation/native';
 
-const FavoriteScreen = ({navigation}) => {
+const FavoriteScreen = ({route,navigation}) => {
+     const number = '+923007406322'
     const [favoriteProperties, setFavoriteProperties] = useState([]);
     const [loading, setLoading] = useState(true);
     const listRef = useRef();
@@ -31,6 +32,7 @@ const FavoriteScreen = ({navigation}) => {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
+                
             });
     
             console.log("API Response Data:", response.data);
@@ -88,7 +90,25 @@ const FavoriteScreen = ({navigation}) => {
             fetchFavorites(); // Fetch data when the screen comes into focus
         }, [])
     );
-   
+    const openWhatsApp = (item) => {
+        const imageUrl = item.image;
+        const message = `Property Details:
+ - Property_ID:  ${item.id}
+ - Price: Rs ${item.price}
+ - Location: ${item.location}
+ - Category: ${item.category}
+ - Type: ${item.type}
+ - Post: ${item.post}
+        
+For more details, please contact us!`;
+
+        
+        const whatsappURL = `https://wa.me/${number}?text=${encodeURIComponent(message)}%0A%0A${encodeURIComponent(imageUrl)}`;
+
+        Linking.openURL(whatsappURL).catch(() =>
+            Alert.alert('WhatsApp is not installed on your device.')
+        );
+    };
     return (
         <View >
              <View style={styles.line}>
@@ -171,6 +191,7 @@ const FavoriteScreen = ({navigation}) => {
                                 marginTop: 10,
                                 marginLeft: 5
                             }}>
+                                {item.post === 'Buy' && (
                             <TouchableOpacity style={{ height: 35, width: 80, backgroundColor: '#191645', borderRadius: 10, justifyContent: 'center' }} 
                             onPress={() => navigation.navigate('Calculator',{ property: item })}>
                                 <Text
@@ -183,6 +204,7 @@ const FavoriteScreen = ({navigation}) => {
                                     Calculator
                                 </Text>
                             </TouchableOpacity>
+                                )}
                             <TouchableOpacity style={{ height: 35, width: 70, backgroundColor: '#191645', borderRadius: 10, justifyContent: "center", marginLeft: 5 }} 
                             onPress={() => {
                                 Linking.openURL(`tel:${number}`)
@@ -198,9 +220,7 @@ const FavoriteScreen = ({navigation}) => {
                                     Call
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={{ height: 35, width: 60, backgroundColor: '#191645', borderRadius: 10, justifyContent: 'center', marginLeft: 5 }} onPress={() => {
-                                Linking.openURL(`whatsapp://send?phone=${number}&text=${message}`)
-                            }} >
+                            <TouchableOpacity style={{ height: 35, width: 60, backgroundColor: '#191645', borderRadius: 10, justifyContent: 'center', marginLeft: 5 }} onPress={() => openWhatsApp(item)} >
                                 <MaterialCommunityIcons name="whatsapp" size={22} color='#FFFFFF' style={styles.flaticon} />
                             </TouchableOpacity>
                         </View>
