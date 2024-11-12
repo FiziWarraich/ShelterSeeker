@@ -1,18 +1,17 @@
 import React ,{useState,useEffect} from "react";
 import { View, Text, StyleSheet, TouchableOpacity,Modal,Image,TextInput ,Alert} from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FeedbackView from "../Components/FeedbackView";
 
 const ProfileScreen = ({ navigation }) => {
   const [showModal,setshowModal]=useState(false)
-  const [showmodal1,setshowmodal1]=useState(false)
-  const [feedback,setFeedback]=useState(false)
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+
   async function getData() {
     try{
       const LoggedIn= await AsyncStorage.getItem('isLoggedIn');
@@ -28,6 +27,8 @@ const ProfileScreen = ({ navigation }) => {
   useEffect(() => {
     getData();
   }, []);
+
+
   const handleLogout = async () => {
     try {
       await AsyncStorage.removeItem('isLoggedIn');
@@ -39,16 +40,7 @@ const ProfileScreen = ({ navigation }) => {
       console.error('Error during logout:', error);
     }
   };
-  const handleFeedbackSubmit = () => {
-    if (feedback) {
-    console.log('Feedback submitted:', feedback);
-    Alert.alert('Feedback Submitted', 'Thank you for your feedback!');
-    navigation.goBack();
-    setFeedback('');
-    setshowModal(false);
-    
-    }
-  };
+
 console.log(name)
   return (
     <View style={styles.container}>
@@ -76,16 +68,9 @@ console.log(name)
           <MaterialCommunityIcons name="account-outline" size={70} color='#43CBAC'></MaterialCommunityIcons>
         </View>
       </View>
-      
-        
-        <TouchableOpacity onPress={()=>setshowModal(true)}>
-        <View style={styles.row}>
-        <AntDesign name="like2" size={25} color='#43CBAC' style={styles.rowicon}></AntDesign>
-        <MaterialCommunityIcons name="greater-than" size={15} color='black' style={styles.rowicon2}></MaterialCommunityIcons>
-          <Text style={styles.textfield} >FeedBack</Text>
-        </View>
-         </TouchableOpacity>
-         
+
+       <FeedbackView showModal={showModal} setshowModal={setshowModal} />
+       
          <TouchableOpacity>
         <View style={styles.row}>
         <Ionicons name="newspaper-outline" size={25} color='#43CBAC' style={styles.rowicon}></Ionicons>
@@ -107,66 +92,7 @@ console.log(name)
       
       
       
-      <Modal transparent={true}
-            visible={showModal}
-            animationType="slide">
-            <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-              <View style={{backgroundColor:'#D4D4D4', height:200,width:300,borderRadius:10}}>
-              
-        <Text style={{alignSelf:'center',fontWeight:'bold',fontSize:24,color:'black'}}>
-          FeedBack
-        </Text>
       
-      <TouchableOpacity onPress={()=>setshowModal(false)}> 
-      <Image style={{height:40,width:40,resizeMode:'cover',position:'absolute',right:10,bottom:-10}} source={require("../assests/close.png")} />
-      </TouchableOpacity>
-          <View style={{flexDirection:'row' }}>
-          <TouchableOpacity onPress={()=>setshowmodal1(true)} >
-              <Image style={{height:70,top:30,width:70,resizeMode:'cover',position:'absolute',left:30}} source={require("../assests/happy.png")} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>setshowmodal1(true)} >
-              <Image style={{height:70,top:30,width:70,resizeMode:'cover',position:'absolute',left:115}} source={require("../assests/smile.png")} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>setshowmodal1(true)} >
-              <Image style={{height:70,top:30,width:70,resizeMode:'cover',position:'absolute',left:200}} source={require("../assests/sad.png")} />
-            </TouchableOpacity>
-            </View>
-            <View style={{flexDirection:'row' }}>
-              <Text style={styles.Modaltext}>Very Good</Text>
-              <Text style={styles.Modaltext}>It's Ok</Text>
-              <Text style={styles.Modaltext}>Very Bad</Text>
-            </View>
-              </View>
-            </View>
-            
-          </Modal>
-          <Modal transparent={true}
-            visible={showmodal1}
-            animationType="slide">
-            <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-              <View style={{backgroundColor:'#D4D4D4', height:300,width:300,borderRadius:10}}>
-              <TouchableOpacity onPress={()=>setshowmodal1(false)}> 
-      <Image style={{height:40,width:40,resizeMode:'cover',position:'absolute',right:10,top:5}} source={require("../assests/close.png")} />
-      </TouchableOpacity>
-        <Text style={{left:10,fontWeight:'500',fontSize:20,color:'black',top:20}}>
-          We value your FeedBack
-        </Text>
-        <TextInput
-            style={styles.textInput}
-            placeholder="Enter your feedback"
-            placeholderTextColor='black'
-            value={feedback}
-            onChangeText={(text)=>setFeedback(text)}
-          />
-          <TouchableOpacity style={{borderRadius:5,top:100,left:100,borderWidth:1,height:40,width:100,justifyContent:'center',backgroundColor:'#191645'}}
-          onPress={handleFeedbackSubmit} 
-       >
-              <Text style={{color:'#FFFFFF',fontSize:20,alignSelf:'center'}} >Submit</Text>
-            </TouchableOpacity>
-              </View>
-            </View>
-            
-          </Modal>
 
     </View>
   )

@@ -6,6 +6,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Share from 'react-native-share';
+
 const PropertyListScreen = ({ route,navigation }) => {
     const { post_id, location_id ,type} = route.params; // Extracting the post_id and location_id from the route params
     const [properties, setProperties] = useState([]);
@@ -13,10 +15,7 @@ const PropertyListScreen = ({ route,navigation }) => {
     const message = "hello there!!"
     const listRef = useRef();
     const [ind, setInd] = useState(0);
-    const [visible, setVisible] = useState(false);
-    const [data, setData] = useState([]);
-    const [error, setError] = useState();
-    const [selectedFilter, setSelectedFilter] = useState(0);
+
     const [loading, setLoading] = useState(true);
     const [favoriteProperties, setFavoriteProperties] = useState([]);
     const fetchFilteredProperties = async () => {
@@ -97,7 +96,7 @@ const PropertyListScreen = ({ route,navigation }) => {
     const addFavorite = async (propertyId) => {
         try {
             // 1. Add the property to the favorites via API
-            await axios.post('https://shelterseeker.projectflux.online/api/add', { property_id: propertyId });
+            await axios.post('https://shelterseeker.projectflux.online/api/add', { property_id: propertyId});
     
             // 2. Update local state
             const updatedFavorites = [...favoriteProperties, propertyId];
@@ -141,14 +140,25 @@ const removeFavorite = async (propertyId) => {
     }, [post_id, location_id]);
     
 
-    const openUrl = async (url) => {
-        const isSupported = await Linking.canOpenURL(url);
-        if (isSupported) {
-            await Linking.openURL(url);
-        } else {
-            Alert.alert(`Don't know how to open this url: ${url}`);
-        }
-    }
+    const openWhatsApp = (item) => {
+        const imageUrl = item.image;
+        const message = `Property Details:
+ - Property_ID:  ${item.id}
+ - Price: Rs ${item.price}
+ - Location: ${item.location}
+ - Category: ${item.category}
+ - Type: ${item.type}
+ - Post: ${item.post}
+        
+For more details, please contact us!`;
+
+        
+        const whatsappURL = `https://wa.me/${number}?text=${encodeURIComponent(message)}%0A%0A${encodeURIComponent(imageUrl)}`;
+
+        Linking.openURL(whatsappURL).catch(() =>
+            Alert.alert('WhatsApp is not installed on your device.')
+        );
+    };
     
     return (
         <View>
@@ -212,7 +222,7 @@ const removeFavorite = async (propertyId) => {
                                     onPress={() => toggleFavorite(item.id)}>
                                     <Icon name={favoriteProperties.includes(item.id) ? "heart" : "heart-o"} size={26} color={"#191645"} />
                                 </TouchableOpacity>
-                                <TouchableOpacity  onPress={() => navigation.navigate('PropertyDetail', { property: item })}>
+                                <TouchableOpacity  onPress={() => navigation.navigate('PropertyDetail', { property: item ,})}>
                             <Image
                                 source={{ uri:item.image }}
                                 style={{
@@ -284,9 +294,7 @@ const removeFavorite = async (propertyId) => {
                                             Call
                                         </Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={{ height: 35, width: 60, backgroundColor: '#191645', borderRadius: 10, justifyContent: 'center', marginLeft: 5 }} onPress={() => {
-                                        Linking.openURL(`whatsapp://send?phone=${number}&text=${message}`)
-                                    }} >
+                                    <TouchableOpacity style={{ height: 35, width: 60, backgroundColor: '#191645', borderRadius: 10, justifyContent: 'center', marginLeft: 5 }} onPress={() => openWhatsApp(item)} >
                                         <MaterialCommunityIcons name="whatsapp" size={22} color='#FFFFFF' style={styles.flaticon} />
                                     </TouchableOpacity>
                                 </View>
@@ -297,88 +305,7 @@ const removeFavorite = async (propertyId) => {
                 }}
             />
             )}
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={visible}
-                onRequestClose={() => {
-                    setVisible(!visible);
-                }}>
-                <View
-                    style={{
-                        flex: 1,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        backgroundColor: 'rgba(0,0,0,.5)',
-                    }}>
-                    <View
-                        style={{
-                            width: '80%',
-                            height: 150,
-                            borderRadius: 10,
-                            backgroundColor: '#fff',
-                        }}>
-                        <TouchableOpacity
-                            style={{
-                                width: '100%',
-                                height: 50,
-                                borderBottomWidth: 0.5,
-                                justifyContent: 'center',
-                                paddingLeft: 20,
-                            }}
-                            onPress={() => {
-                                setSelectedFilter(1);
-                                let tempList = properties.sort((a, b) =>
-                                    a.location > b.location ? 1 : -1,
-                                );
-                                setData(tempList);
-                                listRef.current.scrollToIndex({ animated: true, index: 0 });
-                                setVisible(false);
-                            }}>
-                            <Text style={{ fontSize: 18, color: '#000' }}>
-                                Sort By Name
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={{
-                                width: '100%',
-                                height: 50,
-                                borderBottomWidth: 0.5,
-                                justifyContent: 'center',
-                                paddingLeft: 20,
-                            }}
-                            onPress={() => {
-                                setSelectedFilter(2);
-                                setData(properties.sort((a, b) => a.title - b.title));
-                                listRef.current.scrollToIndex({ animated: true, index: 0 });
-                                setVisible(false);
-                            }}>
-                            <Text style={{ fontSize: 18, color: '#000' }}>
-                                Low to High Price
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={{
-                                width: '100%',
-                                height: 50,
-                                borderBottomWidth: 0.5,
-                                justifyContent: 'center',
-                                paddingLeft: 20,
-                            }}
-                            onPress={() => {
-                                setSelectedFilter(3);
-                                setData(properties.sort((a, b) => b.title - a.title));
-                                listRef.current.scrollToIndex({ animated: true, index: 0 });
-                                setVisible(false);
-                            }}>
-                            <Text style={{ fontSize: 18, color: '#000' }}>
-                                Hight to Low Price
-                            </Text>
-                        </TouchableOpacity>
-
-                    </View>
-                </View>
-            </Modal>
+         
         </View>
     )
 };

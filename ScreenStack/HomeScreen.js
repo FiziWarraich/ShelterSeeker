@@ -160,7 +160,7 @@ const HomeScreen = ({ navigation }) => {
                          {filterData.length > 0 && (
                <View>
                   {filterData.map((item) => (
-                     <TouchableOpacity key={item.id} style={styles.location} onPress={() => setSearchText(item.property_location)}>
+                     <TouchableOpacity key={item.id} style={styles.location} onPress={() => handleLocationSelect(item)}>
                         <Text style={styles.locationtext}>{item.property_location}</Text>
                      </TouchableOpacity>
                   ))}
