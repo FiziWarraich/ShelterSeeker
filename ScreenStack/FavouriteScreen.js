@@ -47,8 +47,12 @@ const FavoriteScreen = ({route,navigation}) => {
             console.log('Filtered Favorites:', filteredFavorites);
             setFavoriteProperties(filteredFavorites);
         } catch (error) {
-            console.error('Error fetching favorites:', error);
-        } finally {
+            if (error.response && error.response.status === 404) {
+                setFavoriteProperties([]); // No favorites found; set to empty list without showing error
+            } else {
+                console.error('Error fetching favorites:', error);
+            }
+        }finally {
             setLoading(false); // Stop loading
         }
     };

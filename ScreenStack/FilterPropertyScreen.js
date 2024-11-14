@@ -78,10 +78,14 @@ const FilterPropertyScreen = ({ route,navigation }) => {
     const getFavorites = async () => {
         try {
             const response = await axios.get('https://shelterseeker.projectflux.online/api/show'); // Get favorites from backend
-            const favoriteData = response.data.favorites; // Access 'favorites' array from response
+            const favoriteData = response.data.favorites|| []; // Access 'favorites' array from response
             setFavoriteProperties(favoriteData.map(item => item.id)); // Map through the 'favorites' array to extract IDs
         } catch (error) {
-            console.error('Error fetching favorites:', error);
+            if (error.response && error.response.status === 404) {
+                setFavoriteProperties([]); // No favorites found; set to empty list without showing error
+            } else {
+                console.error('Error fetching favorites:', error);
+            }
         }
     };
     

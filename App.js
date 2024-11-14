@@ -22,6 +22,8 @@ import PropertyListScreen from './ScreenStack/PropertyListScreen';
 import PropertyDetailScreen from './ScreenStack/PropertyDetailScreen';
 import FilterPropertyScreen from './ScreenStack/FilterPropertyScreen';
 import FeedbackView from './Components/FeedbackView';
+import TermandPolicy from './Components/TermandPolicy';
+import EditProfileScreen from './ScreenStack/EditProfileScreen';
 const Stack=createNativeStackNavigator();
 const App=()=>
 {
@@ -41,6 +43,8 @@ return(
       <Stack.Screen name='PropertyDetail' component={PropertyDetailScreen}/>
       <Stack.Screen name='FilterProperty' component={FilterPropertyScreen}/>
       <Stack.Screen name='Feedback' component={FeedbackView}/>
+      <Stack.Screen name='Terms' component={TermandPolicy}/>
+      <Stack.Screen name='EditProfile' component={EditProfileScreen}/>
     </Stack.Navigator>
   </NavigationContainer>
   
