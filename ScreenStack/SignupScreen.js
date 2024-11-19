@@ -31,10 +31,10 @@ const SignupScreen = ({navigation}) => {
       {
         Errors.name="Name is required";
         valid=false;
-      }else if (!/^[A-Za-z0-9_ ]+$/.test(name)) {
-        Errors.name =  'Invalid Name. Only letters, numbers, spaces, and underscores are allowed.';
-        valid=false;
-      }
+      }else if (!/^[A-Za-z ]+$/.test(name)) {
+        Errors.name = 'Invalid Name. Only letters and spaces are allowed.';
+        valid = false;
+    }
     if(!email)
       {
         Errors.email="Email is required";

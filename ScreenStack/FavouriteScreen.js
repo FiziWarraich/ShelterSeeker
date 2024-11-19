@@ -151,7 +151,7 @@ For more details, please contact us!`;
                     <TouchableOpacity
                             style={styles.favicon}
                             onPress={() => removeFavorite(item.id)}>
-                            <Icon name={"heart" ? "heart" : "heart-o"} size={24} color={"#191645"} />
+                            <Icon name={"heart" ? "heart" : "heart-o"} size={30} color={"#191645"} />
                         </TouchableOpacity>
 
                     <Image

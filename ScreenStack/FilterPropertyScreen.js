@@ -209,7 +209,7 @@ For more details, please contact us!`;
                             <TouchableOpacity 
                             style={styles.favicon}
                              onPress={() => toggleFavorite(item.id,post_id)}>
-                                    <Icon name={favoriteProperties.includes(item.id) ? "heart" : "heart-o"} size={26} color={"#191645"}/>
+                                    <Icon name={favoriteProperties.includes(item.id) ? "heart" : "heart-o"} size={30} color={"#191645"}/>
                               </TouchableOpacity>  
                            <TouchableOpacity onPress={() => navigation.navigate('PropertyDetail', { property: item })}>
                             <Image

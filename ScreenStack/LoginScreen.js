@@ -54,11 +54,11 @@ const LoginScreen = ({navigation}) => {
             }
           }).then((res)=>{
            console.log("res+++",res.data)
-           const token = res.data.access_token; // Accessing the access_token
+           const token = res.data.access_token; 
             const name = res.data.user.name;
 
             if (name && token) {
-                // Save token and user name to AsyncStorage
+                
                  AsyncStorage.setItem('token', token);
                  AsyncStorage.setItem('name', name);
                 console.log(name);
@@ -70,7 +70,12 @@ const LoginScreen = ({navigation}) => {
             }
           
           }).catch((error)=>{
+            if (error.response && error.response.status === 401) {
+              Alert.alert('Invalid Credentials', 'The email or password is incorrect. Please try again.');
+            } else {
             console.log("error raised",error)
+            Alert.alert('Login Error', 'Something went wrong. Please try again later.');
+          }
           });
         } else {
           // Set errors

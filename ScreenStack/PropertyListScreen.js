@@ -18,6 +18,7 @@ const PropertyListScreen = ({ route,navigation }) => {
 
     const [loading, setLoading] = useState(true);
     const [favoriteProperties, setFavoriteProperties] = useState([]);
+    const [isProcessing, setIsProcessing] = useState(false);
     const fetchFilteredProperties = async () => {
         setLoading(true); // Show loading indicator
     
@@ -225,7 +226,7 @@ For more details, please contact us!`;
                             <TouchableOpacity
                                     style={styles.favicon}
                                     onPress={() => toggleFavorite(item.id)}>
-                                    <Icon name={favoriteProperties.includes(item.id) ? "heart" : "heart-o"} size={26} color={"#191645"} />
+                                    <Icon name={favoriteProperties.includes(item.id) ? "heart" : "heart-o"} size={30} color={"#191645"} />
                                 </TouchableOpacity>
                                 <TouchableOpacity  onPress={() => navigation.navigate('PropertyDetail', { property: item ,})}>
                             <Image
