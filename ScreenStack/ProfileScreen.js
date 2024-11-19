@@ -1,8 +1,9 @@
-import React ,{useState,useEffect} from "react";
+import React ,{useState,useEffect,useCallback} from "react";
 import { View, Text, StyleSheet, TouchableOpacity,Modal,Image,TextInput ,Alert} from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native'
 import FeedbackView from "../Components/FeedbackView";
 
 const ProfileScreen = ({ navigation }) => {
@@ -18,15 +19,19 @@ const ProfileScreen = ({ navigation }) => {
       const storedName = await AsyncStorage.getItem('name');
       if (LoggedIn === 'true') {
       setIsLoggedIn(true);
-      setName( storedName);
+      setName(storedName || '');
+
     }
   }catch (error) {
     console.error('Error checking login status:', error);
+    console.error('Error fetching profile data:', error);
   }
   }
-  useEffect(() => {
-    getData();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+         getData();
+    }, [])
+);
 
 
   const handleLogout = async () => {
@@ -40,8 +45,6 @@ const ProfileScreen = ({ navigation }) => {
       console.error('Error during logout:', error);
     }
   };
-
-console.log(name)
   return (
     <View style={styles.container}>
       <View style={styles.profile}>
@@ -51,9 +54,9 @@ console.log(name)
       
       <View style={styles.header}>
       {isLoggedIn?(
-       
+       <View style={styles.loginnamebox}>
         <Text style={styles.loginnameText}>{name}</Text>
-         
+         </View> 
       ):(
         <View>
           <Text style={styles.loginText}>Log in </Text>
@@ -65,13 +68,15 @@ console.log(name)
       )
     }
         <View style={styles.box}>
-          <MaterialCommunityIcons name="account-outline" size={70} color='#43CBAC'></MaterialCommunityIcons>
+        <Image style={styles.image} source={require("../assests/profile.jpg")} />
         </View>
       </View>
-
+      <TouchableOpacity style={styles.editbutton} onPress={()=>navigation.navigate('EditProfile')}>
+        <Text style={styles.edittext}>Edit Profile</Text>
+    </TouchableOpacity>
        <FeedbackView showModal={showModal} setshowModal={setshowModal} />
        
-         <TouchableOpacity>
+         <TouchableOpacity onPress={()=>{navigation.navigate('Terms')}}>
         <View style={styles.row}>
         <Ionicons name="newspaper-outline" size={25} color='#43CBAC' style={styles.rowicon}></Ionicons>
         <MaterialCommunityIcons name="greater-than" size={15} color='black' style={styles.rowicon2}></MaterialCommunityIcons>
@@ -128,7 +133,7 @@ const styles = StyleSheet.create
       
       height: 150,
       display: 'flex',
-      top: 70,
+      top: 30,
     },
     profileText: {
      
@@ -148,12 +153,17 @@ const styles = StyleSheet.create
       left: 20,
       color: 'black',
     },
+    loginnamebox:
+    {
+      alignContent:'center',
+      alignItems:'center'
+    },
     loginnameText: {
-      top:15,
+      top:85,
       fontSize: 30,
       fontWeight: 'bold',
-      left: 20,
       color: 'black',
+      
     },
     loginaccountText: {
       fontSize: 14,
@@ -161,14 +171,42 @@ const styles = StyleSheet.create
       fontWeight: '500',
       color: '#43CBAC',
     },
-    box:
+     box: {
+      height: 70,  
+      width: 80, 
+        borderRadius: 35,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        
+    },
+    image: {
+      
+      height: 100, 
+      width: 100,  
+      resizeMode: 'cover', 
+      left:140
+  },
+  editbutton:
+  {
+   height:35,
+   width:110,
+   borderRadius:20,
+   marginBottom:12,
+   marginTop:10,
+   justifyContent:'center',
+   alignItems:'center',
+   alignSelf:'center',
+   backgroundColor:'#43CBAC',
+  },
+  edittext:
     {
-      height: 70,
-      width: 70,
-      borderRadius: 15,
-      backgroundColor: '#e6faf9',
-      position:'absolute',
-      right:20,
+     
+      
+      color:'#FFFFFF',
+      fontSize:15,
+      fontWeight:'400',
+      
     },
     row:
     {

@@ -47,8 +47,12 @@ const FavoriteScreen = ({route,navigation}) => {
             console.log('Filtered Favorites:', filteredFavorites);
             setFavoriteProperties(filteredFavorites);
         } catch (error) {
-            console.error('Error fetching favorites:', error);
-        } finally {
+            if (error.response && error.response.status === 404) {
+                setFavoriteProperties([]); // No favorites found; set to empty list without showing error
+            } else {
+                console.error('Error fetching favorites:', error);
+            }
+        }finally {
             setLoading(false); // Stop loading
         }
     };
@@ -147,7 +151,7 @@ For more details, please contact us!`;
                     <TouchableOpacity
                             style={styles.favicon}
                             onPress={() => removeFavorite(item.id)}>
-                            <Icon name={"heart" ? "heart" : "heart-o"} size={24} color={"#191645"} />
+                            <Icon name={"heart" ? "heart" : "heart-o"} size={30} color={"#191645"} />
                         </TouchableOpacity>
 
                     <Image

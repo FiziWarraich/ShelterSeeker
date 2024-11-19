@@ -94,144 +94,34 @@ const FeedbackView = () => {
 }
 const styles = StyleSheet.create
   ({
-    container:
-    {
-      flex: 1,
-      backgroundColor: '#FFFFFF',
-      borderBottomWidth: 2,
-      borderColor: '#43CBAC',
-    },
-    profile:
-    {
-      flexDirection: 'row',
-      height: 70,
-      width: '100%',
-      alignItems: 'center',
-      borderBottomWidth: 1.5,
-      marginBottom: 20,
-      backgroundColor: '#191645',
-      justifyContent: 'center',
-      alignContent: 'center'
-    },
-    iconback:
-    {
-      color: '#FFFFFF',
-      marginLeft: -110
-    },
-    header:
-    {
-
-      height: 150,
-      display: 'flex',
-      top: 70,
-    },
-    profileText: {
-
-      fontSize: 30,
-      fontWeight: '500',
-      color: '#FFFFFF',
-      alignSelf: 'center'
-    },
-    profileicon:
-    {
-      right: 25,
-      position: 'absolute'
-    },
-    loginText: {
-      fontSize: 16,
-      fontWeight: '500',
-      left: 20,
-      color: 'black',
-    },
-    loginnameText: {
-      top: 15,
-      fontSize: 30,
-      fontWeight: 'bold',
-      left: 20,
-      color: 'black',
-    },
-    loginaccountText: {
-      fontSize: 14,
-      left: 20,
-      fontWeight: '500',
-      color: '#43CBAC',
-    },
-    box:
-    {
-      height: 70,
-      width: 70,
-      borderRadius: 15,
-      backgroundColor: '#e6faf9',
-      position: 'absolute',
-      right: 20,
-    },
     row:
     {
-
-      height: 50,
-      borderTopWidth: 1,
-      borderColor: '#d4d4d4',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginTop: 10
+      
+      height:50,
+      borderTopWidth:1,
+      borderColor:'#d4d4d4',
+      display:'flex',
+      justifyContent:'center',
+      alignItems:'center',
+      marginTop:10
     },
     rowicon:
     {
-      position: 'absolute',
-      left: 12,
-      alignSelf: 'center'
+    position:'absolute',
+    left:12,
+    alignSelf:'center'
     },
     rowicon2:
     {
-      position: 'absolute',
-      right: 12,
-      alignSelf: 'center'
+    position:'absolute',
+    right:12,
+    alignSelf:'center'
     },
     textfield:
     {
-      color: 'black',
-      alignSelf: 'flex-start',
-      left: 50
-    },
-    button:
-    {
-      height: 40,
-      width: 300,
-      borderRadius: 20,
-      marginBottom: 12,
-      marginTop: 50,
-      justifyContent: 'center',
-      alignItems: 'center',
-      alignSelf: 'center',
-      backgroundColor: 'red',
-    },
-    btntext1:
-    {
-
-
-      color: '#FFFFFF',
-      fontSize: 18,
-      fontWeight: 'bold',
-
-    },
-    button2:
-    {
-      height: 40,
-      width: 300,
-      borderRadius: 20,
-      marginBottom: 12,
-      marginTop: 50,
-      justifyContent: 'center',
-      alignItems: 'center',
-      alignSelf: 'center',
-      backgroundColor: '#191645',
-    },
-    btntext2:
-    {
-      color: '#FFFFFF',
-      fontSize: 18,
-      fontWeight: 'bold'
+     color:'black',
+     alignSelf:'flex-start',
+     left:50
     },
     Modaltext:
     {
@@ -243,7 +133,7 @@ const styles = StyleSheet.create
       padding: 10,
       shadowColor: '#FFFFFF',
       elevation: 10,
-      left: 15
+      left: 18
     },
     textInput:
     {
