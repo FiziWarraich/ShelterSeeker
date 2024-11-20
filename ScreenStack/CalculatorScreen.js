@@ -120,7 +120,7 @@ const CalculatorScreen = ({ navigation, route }) => {
         </View>
 
         <View>
-          <Text style={styles.userName}>Interest Rate</Text>
+          <Text style={styles.userName}>Interest Rate (in percentage)</Text>
           <TextInput
             style={styles.textInput}
             keyboardType="numeric"

@@ -19,13 +19,22 @@ const EditProfileScreen = () => {
 
     useEffect(() => {
         const loadUserData = async () => {
-            const storedName = await AsyncStorage.getItem('name');
-            const storedEmail = await AsyncStorage.getItem('email');
-            if (storedName) setName(storedName);
-            if (storedEmail) setEmail(storedEmail);
+            try {
+                const storedName = await AsyncStorage.getItem('name');
+                const storedEmail = await AsyncStorage.getItem('email');
+                
+                console.log('Retrieved Name:', storedName);
+                console.log('Retrieved Email:', storedEmail);
+    
+                if (storedName) setName(storedName);
+                if (storedEmail) setEmail(storedEmail);
+            } catch (error) {
+                console.error('Error retrieving user data:', error);
+            }
         };
         loadUserData();
     }, []);
+    
     const handleUpdateProfile = async () => {
         setLoading(true);
     
@@ -44,10 +53,11 @@ const EditProfileScreen = () => {
             Alert.alert('Success', response.data.message);
     
             if (response.data.user) {
+                console.log('Updated User Data:', response.data.user);
                 await AsyncStorage.setItem('name', response.data.user.name);
                 await AsyncStorage.setItem('email', response.data.user.email);
             }
-           console.log( response.data.user.name);
+    
             navigation.goBack(); // Navigate back to ProfileScreen
     
         } catch (error) {
@@ -57,6 +67,7 @@ const EditProfileScreen = () => {
             setLoading(false);
         }
     };
+    
     
     
     return (
@@ -72,6 +83,7 @@ const EditProfileScreen = () => {
             <TextInput
                 style={styles.input}
                 placeholder="Enter your name"
+                placeholderTextColor="#CAD0CF"
                 value={name}
                 onChangeText={setName}
             />
@@ -79,6 +91,7 @@ const EditProfileScreen = () => {
             <TextInput
                 style={styles.input}
                 placeholder="Enter your email"
+                placeholderTextColor="#CAD0CF"
                 value={email}
                 keyboardType="email-address"
                 onChangeText={setEmail}
@@ -87,6 +100,7 @@ const EditProfileScreen = () => {
             <TextInput
                 style={styles.input}
                 placeholder="Enter a new password"
+                placeholderTextColor="#CAD0CF"
                 value={password}
                 secureTextEntry
                 onChangeText={setPassword}
@@ -132,7 +146,7 @@ const styles = StyleSheet.create({
         padding:20
       },
     label: {
-        fontSize: 18,
+        fontSize: 22,
         fontWeight: 'bold',
         marginVertical: 10,
         color:'black'
@@ -143,7 +157,8 @@ const styles = StyleSheet.create({
         padding: 8,
         borderRadius: 4,
         color:'black',
-        borderWidth:2
+        borderWidth:2,
+        fontSize:16,
     },
     editButton:
     {
