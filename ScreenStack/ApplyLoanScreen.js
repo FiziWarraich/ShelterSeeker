@@ -12,13 +12,21 @@ const ApplyLoanScreen = ({ navigation }) => {
   const islamibank='https://bankislami.com.pk/muskun-home-financing/';
   const allied='https://www.abl.com/personal/loans/';
   const openUrl = async (url) => {
-    const isSupported = await Linking.canOpenURL(url);
-    if (isSupported) {
-        await Linking.openURL(url);
-    } else {
-        Alert.alert(`Don't know how to open this url: ${url}`);
+    try {
+        const isSupported = await Linking.canOpenURL(url);
+        if (isSupported) {
+            console.log("Opening URL: ", url);
+            await Linking.openURL(url);
+        } else {
+            console.log("Cannot Open URL: ", url);
+            Alert.alert('Error', 'Browser not supported. Please check your device settings.');
+        }
+    } catch (error) {
+        console.error("Error opening URL: ", error);
+        Alert.alert('Error', 'An unexpected error occurred.');
     }
-}
+};
+
  
   return (
     <View >
