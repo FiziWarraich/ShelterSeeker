@@ -17,9 +17,11 @@ const ProfileScreen = ({ navigation }) => {
     try{
       const LoggedIn= await AsyncStorage.getItem('isLoggedIn');
       const storedName = await AsyncStorage.getItem('name');
+      const storedEmail = await AsyncStorage.getItem('email');
       if (LoggedIn === 'true') {
       setIsLoggedIn(true);
       setName(storedName || '');
+      setEmail(storedEmail || '');
 
     }
   }catch (error) {

@@ -56,11 +56,12 @@ const LoginScreen = ({navigation}) => {
            console.log("res+++",res.data)
            const token = res.data.access_token; 
             const name = res.data.user.name;
-
+            const email=res.data.user.email;
             if (name && token) {
                 
                  AsyncStorage.setItem('token', token);
                  AsyncStorage.setItem('name', name);
+                 AsyncStorage.setItem('email', email);
                 console.log(name);
                 Alert.alert('Login Successfully');
                  AsyncStorage.setItem('isLoggedIn', 'true');
