@@ -53,6 +53,8 @@ const PropertyDetailScreen = ({ route, navigation }) => {
         <Text style={styles.location}>{property.location}</Text>
         <View style={{ flexDirection: 'row' }}>
           <Text style={[styles.areaSize]}>{property.area_size}</Text>
+          <MaterialCommunityIcons name="checkbox-blank" size={18} color='#191645' style={styles.icon2} />
+          <Text style={styles.status}>{property.status}</Text>
         </View >
         <Text style={styles.borderline}></Text>
         <Text>
@@ -191,8 +193,18 @@ const styles = StyleSheet.create({
     fontWeight:'bold',
     marginEnd:10,
     color:'black'
+  } ,
+  status: {
+    right: -170,
+    fontSize: 16,
+    marginBottom: 8,
+    color: '#000',
+  },
+  icon2: {
+    right: -170,
+    marginBottom: 8,
+    top:2
   }
-
 });
 
 export default PropertyDetailScreen;

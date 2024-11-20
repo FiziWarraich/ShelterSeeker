@@ -170,6 +170,7 @@ const styles = StyleSheet.create
       scrollContainer: {
         flexGrow: 1,
         justifyContent: 'center',
+        backgroundColor:'white'
       },
     container: {
       flex: 1,
