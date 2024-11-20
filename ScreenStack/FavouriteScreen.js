@@ -153,7 +153,9 @@ For more details, please contact us!`;
                             onPress={() => removeFavorite(item.id)}>
                             <Icon name={"heart" ? "heart" : "heart-o"} size={30} color={"#191645"} />
                         </TouchableOpacity>
-
+                        <TouchableOpacity onPress={() =>
+                     navigation.navigate('PropertyDetail', { property: item })
+                     }>
                     <Image
                         source={{ uri:item.image }}
                         style={{
@@ -163,6 +165,7 @@ For more details, please contact us!`;
                             borderRadius: 10,
                         }}
                     />
+                    </TouchableOpacity>
                     <View style={{ width: '80%' }}>
                         <Text
                             style={{ fontWeight: '600', marginLeft: 10, color: 'black', fontSize: 16 }}>

@@ -172,7 +172,7 @@ const styles = StyleSheet.create
       color: '#43CBAC',
     },
      box: {
-      height: 70,  
+      height: 65,  
       width: 80, 
         borderRadius: 35,
         justifyContent: 'center',

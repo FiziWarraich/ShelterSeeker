@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
         padding:20
       },
     label: {
-        fontSize: 18,
+        fontSize: 22,
         fontWeight: 'bold',
         marginVertical: 10,
         color:'black'
@@ -143,7 +143,8 @@ const styles = StyleSheet.create({
         padding: 8,
         borderRadius: 4,
         color:'black',
-        borderWidth:2
+        borderWidth:2,
+        fontSize:16
     },
     editButton:
     {

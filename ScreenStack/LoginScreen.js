@@ -27,7 +27,7 @@ const LoginScreen = ({navigation}) => {
         Errors.email="Email is required";
         valid=false;
       }else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
-        Errors.email = 'Invalid email address';
+        Errors.email = 'Invalid email format';
         valid=false;
       }
       if (!password) {
