@@ -47,7 +47,7 @@ const SignupScreen = ({navigation}) => {
         Errors.password = 'Password is required';
         valid = false;
       } else if (!validatePasswordLength(password)) {
-        Errors.password = 'Password must be at least 6 characters long';
+        Errors.password = 'Password must be at least 8 characters long';
         valid = false;
       }else if (!/[A-Z]/.test(password)) Errors.password = 'Password must contain at least one uppercase letter', valid = false;
       else if (!/[a-z]/.test(password)) Errors.password = 'Password must contain at least one lowercase letter', valid = false;
@@ -73,7 +73,6 @@ const SignupScreen = ({navigation}) => {
             console.log("error raised",error)
           });
         } else {
-          // Set errors
           setErrors(Errors);
         }
     
@@ -263,7 +262,7 @@ const styles = StyleSheet.create
       marginTop: 10,
     },
     buttonText: {
-      color: 'white', // White text color
+      color: 'white', 
       fontSize: 20,
       fontWeight: 'bold',
       textAlign: 'center',

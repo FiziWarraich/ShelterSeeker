@@ -7,14 +7,14 @@ const SearchScreen = ({navigation,route}) => {
   const { post_id, location_id,type } = route.params ||{};
   const [selectedCategory, setSelectedCategory] = useState("Residential");
   const [selectedType, setSelectedType] = useState(null);
-  const [Category, setCategory] = useState([]); // Store categories from API
+  const [Category, setCategory] = useState([]); 
   const [types, setTypes] = useState({ });
 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch categories
+        
         const categoryResponse = await axios.get('https://shelterseeker.projectflux.online/api/category');
         setCategory(categoryResponse.data.Category);
       const [firstResponse, secondResponse, thirdResponse] = await Promise.all([
@@ -40,7 +40,7 @@ const SearchScreen = ({navigation,route}) => {
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
-    setSelectedType(null); // Reset type when category changes
+    setSelectedType(null); 
   };
 
   const handleFirsTypeSelect = (type) => {
@@ -53,21 +53,21 @@ const SearchScreen = ({navigation,route}) => {
       return;
     }
 
-    // Find the selected category and type's IDs
+    
     const selectedCategoryData = Category.find(cat => cat.category_name === selectedCategory);
     const selectedTypeData = types[selectedCategory].find(t => t.property_type === selectedType);
 
     const category_id = selectedCategoryData ? selectedCategoryData.id : null;
     const type_id = selectedTypeData ? selectedTypeData.id : null;
   console.log(post_id)
-    // Navigate to PropertyListScreen and pass category_id and type_id
+    
     if (category_id && type_id) {
-      // Navigate to FilterProperty screen with post_id, location_id, category_id, and type_id
+      
       navigation.navigate('FilterProperty', {
-        post_id,   // Ensure post_id is passed
-        location_id,      // Pass location_id
-        category_id,      // Pass selected category ID
-        type_id ,        // Pass selected type ID
+        post_id,   
+        location_id,     
+        category_id,      
+        type_id ,       
         type
       });
     } else {
@@ -75,9 +75,9 @@ const SearchScreen = ({navigation,route}) => {
     }
   }
 
-  // Get types based on selected category or show all types if none is selected
+  
   const filteredTypes = selectedCategory ? types[selectedCategory] || [] :
-  Object.values(types).flat();// Flatten all types if no category is selected
+  Object.values(types).flat();
 
   return (
     <View style={styles.container}>
@@ -121,8 +121,6 @@ const SearchScreen = ({navigation,route}) => {
         </View>
       )}
      
-
-      {/* Similar structure for other categories (Plot, Commercial) */}
       <TouchableOpacity style={styles.Apply} onPress={applyFilters}>
             <Text style={styles.Applytext}>Apply Filters</Text>
           </TouchableOpacity>

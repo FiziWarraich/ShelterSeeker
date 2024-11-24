@@ -16,13 +16,7 @@ const CalculatorScreen = ({ navigation, route }) => {
 
 
   function calculateLoan() {
-    // Log the current input values for debugging
-    console.log('Property Price:', propertyPrice);
-    console.log('Down Payment:', downPayment);
-    console.log('Loan Duration:', loanDuration);
-    console.log('Interest Rate:', interestRate);
-  
-    // Check if all fields have been filled and are valid
+   
     if (
       propertyPrice.trim() === "" ||
       downPayment.trim() === "" ||
@@ -32,22 +26,13 @@ const CalculatorScreen = ({ navigation, route }) => {
       console.log("Error: Empty fields detected");
       setErrorMessage("Please fill in all fields with valid numbers.");
       setShowModal(true);
-      return; // Stop further execution if fields are empty
+      return; 
     }
-  
-    // Convert inputs to numbers
     const price = parseFloat(propertyPrice);
     const downPaymentAmount = parseFloat(downPayment);
     const duration = parseInt(loanDuration);
     const rate = parseFloat(interestRate);
   
-    // Debugging: Log parsed values to make sure they're correct
-    console.log("Parsed Price:", price);
-    console.log("Parsed Down Payment:", downPaymentAmount);
-    console.log("Parsed Duration:", duration);
-    console.log("Parsed Interest Rate:", rate);
-  
-    // Validate if inputs are numbers and greater than zero
     if (
       isNaN(price) || price <= 0 ||
       isNaN(downPaymentAmount) || downPaymentAmount <= 0 ||
@@ -57,45 +42,22 @@ const CalculatorScreen = ({ navigation, route }) => {
       console.log("Error: Invalid numbers entered");
       setErrorMessage("Please enter valid positive numbers.");
       setShowModal(true);
-      return; // Stop further execution if validation fails
+      return; 
     }
-  
-    // Calculate principal loan amount (price - down payment)
     const principal = price - downPaymentAmount;
-  
-    // Convert annual interest rate to monthly and percentage to decimal
     const monthlyInterestRate = (rate / 100) / 12;
-  
-    // Convert loan duration to months
     const numberOfMonths = duration * 12;
-  
-    // Calculate the monthly payment using the loan formula
     const monthlyPayment = (principal * monthlyInterestRate) /
       (1 - Math.pow(1 + monthlyInterestRate, -numberOfMonths));
-  
-    // Set the calculated monthly investment (rounded to 2 decimal places)
     setMonthlyInvestment(monthlyPayment.toFixed(2));
-  
-    // Calculate additional amounts (total interest, total payment)
     const totalInterestAmount = (monthlyPayment * numberOfMonths) - principal;
+
     const totalPaymentAmount = principal + totalInterestAmount;
-  
-    // Set the total interest and total payment
     setTotalInterest(totalInterestAmount.toFixed(2));
     setTotalPayment(totalPaymentAmount.toFixed(2));
-  
-    // Clear error message and show the modal after calculation
     setErrorMessage("");
     setShowModal(true);
   }
-  
-
-
-  
-  
-  
-
-
   return (
     <View style={styles.container}>
       <View style={{ backgroundColor: '#191645', height: 70, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -123,7 +85,6 @@ const CalculatorScreen = ({ navigation, route }) => {
           <Text style={styles.userName}>Interest Rate (in percentage)</Text>
           <TextInput
             style={styles.textInput}
-            keyboardType="numeric"
             placeholderTextColor="black"
             selectionColor={'#191645'}
             value={interestRate}
@@ -281,7 +242,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.70)', // Semi-transparent black
+    backgroundColor: 'rgba(0, 0, 0, 0.70)', 
     zIndex: 1,
   },
 });

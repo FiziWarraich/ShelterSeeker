@@ -1,4 +1,3 @@
-// PropertyDetailScreen.js
 import React, { useEffect } from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, FlatList, TouchableOpacity } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -22,7 +21,6 @@ const PropertyDetailScreen = ({ route, navigation }) => {
         indicatorStyle="black"
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => {
-          // Debugging: log the full image URL
           console.log(item.images);
 
           return (
@@ -33,7 +31,7 @@ const PropertyDetailScreen = ({ route, navigation }) => {
                 </TouchableOpacity>
               </View>
               <Image
-                source={{ uri: item.images }} // Using the full URL directly
+                source={{ uri: item.images }} 
                 style={styles.image}
                 onError={(error) => console.log('Image load error:', error)}
               />
@@ -106,22 +104,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   imageWrapper: {
-    position: 'relative', // Allows absolute positioning of the icon inside this wrapper
+    position: 'relative', 
 
   },
   iconContainer: {
     position: 'absolute',
-    top: 10, // Adjust position as needed
-    left: 10, // Adjust position as needed
-    zIndex: 1, // Ensures the icon appears above the image
+    top: 10, 
+    left: 10, 
+    zIndex: 1, 
   },
   iconback:
   {
     color: 'black'
   },
   image: {
-    width: 400, // Set a width
-    height: 250, // Set a height
+    width: 400, 
+    height: 250, 
     resizeMode: 'cover',
 
   },
@@ -135,7 +133,7 @@ const styles = StyleSheet.create({
   },
   imageContainer:
   {
-    marginRight: 5, // Add spacing between images
+    marginRight: 5, 
     borderRadius: 10,
     overflow: 'hidden',
   },

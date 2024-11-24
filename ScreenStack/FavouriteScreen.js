@@ -16,13 +16,13 @@ const FavoriteScreen = ({route,navigation}) => {
     const [visible, setVisible] = useState(false);
 
     const setAuthToken = async () => {
-        const token = await AsyncStorage.getItem('token'); // Replace 'token' with your actual token key
+        const token = await AsyncStorage.getItem('token');
         if (token) {
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Set token in headers
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; 
         }
     };
     const fetchFavorites = async () => {
-        setLoading(true); // Start loading
+        setLoading(true); 
         try {
             const favoritesData = await AsyncStorage.getItem('favorites');
             const favorites = favoritesData ? JSON.parse(favoritesData) : [];
@@ -37,45 +37,35 @@ const FavoriteScreen = ({route,navigation}) => {
     
             console.log("API Response Data:", response.data);
     
-            // Accessing the favorites array from the response
             const filteredFavorites = response.data.favorites.filter(property => {
                 const isFavorite = favorites.includes(property.id);
                 console.log('Checking property:', property.id, 'isFavorite:', isFavorite);
-                return isFavorite; // Only include favorite properties
+                return isFavorite;
             });
     
             console.log('Filtered Favorites:', filteredFavorites);
             setFavoriteProperties(filteredFavorites);
         } catch (error) {
             if (error.response && error.response.status === 404) {
-                setFavoriteProperties([]); // No favorites found; set to empty list without showing error
+                setFavoriteProperties([]); 
             } else {
                 console.error('Error fetching favorites:', error);
             }
         }finally {
-            setLoading(false); // Stop loading
+            setLoading(false); 
         }
     };
-    
-    
-    
-    
-    
-    
-    
-    
     
     
  
     const removeFavorite = async (propertyId) => {
         try {
-            // Use DELETE method if that's what the API requires
+            
             await axios.delete(`https://shelterseeker.projectflux.online/api/delete`, {
                 data: { property_id: propertyId },
             });
             setFavoriteProperties(favoriteProperties.filter(property => property.id !== propertyId));
-            
-            // Update AsyncStorage after removing
+        
             const favoritesData = await AsyncStorage.getItem('favorites');
             if (favoritesData) {
                 const updatedFavorites = JSON.parse(favoritesData).filter(id => id !== propertyId);
@@ -90,8 +80,8 @@ const FavoriteScreen = ({route,navigation}) => {
 
     useFocusEffect(
         React.useCallback(() => {
-            setAuthToken(); // Set the token before fetching
-            fetchFavorites(); // Fetch data when the screen comes into focus
+            setAuthToken(); 
+            fetchFavorites(); 
         }, [])
     );
     const openWhatsApp = (item) => {
