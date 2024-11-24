@@ -4,24 +4,17 @@ import {
    , TextInput, ScrollView, FlatList,Alert,
    TextComponent
 } from "react-native";
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { SearchBar } from "react-native-screens";
 import { useNavigation } from "@react-navigation/native";
 import axios from 'axios';
 
 const HomeCards = () => {
     const navigation = useNavigation();
-   const [Post, setPost] = useState([]); // State to manage 'Buy' or 'Rent' selection
-   
- 
-   // Function to fetch post types from API
-   
-
+   const [Post, setPost] = useState([]); 
    
       const fetchTypes = async () => {
          try {
-            const response = await axios.get('https://shelterseeker.projectflux.online/api/post'); // API URL for Buy/Rent options
-            setPost(response.data.Post); // assuming response contains { types: ['buy', 'rent'] }
+            const response = await axios.get('https://shelterseeker.projectflux.online/api/post'); 
+            setPost(response.data.Post); 
             
          } catch (error) {
             console.log('Error fetching types:', error);
@@ -33,14 +26,14 @@ const HomeCards = () => {
       fetchTypes();
      
    }, []);
-   // Replace this with your actual API call
+   
   
 
    
 const handleChoice = (post_id) => {
-   navigation.navigate('PropertyList', {post_id }); // Navigates to PropertyListScreen with selected type
+   navigation.navigate('PropertyList', {post_id }); 
  };
- const buyTypes = Post.filter(post => post.property_post.toLowerCase() === 'buy'); // Ensure 'buy' is lowercase
+ const buyTypes = Post.filter(post => post.property_post.toLowerCase() === 'buy'); 
  const rentTypes = Post.filter(post => post.property_post.toLowerCase() === 'rent'); 
 
    return (

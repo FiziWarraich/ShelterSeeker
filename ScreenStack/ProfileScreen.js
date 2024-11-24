@@ -42,7 +42,7 @@ const ProfileScreen = ({ navigation }) => {
       await AsyncStorage.removeItem('email');
       setIsLoggedIn(false);
       setName('');
-      navigation.replace('Login'); // Navigate back to login screen
+      navigation.replace('Login'); 
     } catch (error) {
       console.error('Error during logout:', error);
     }

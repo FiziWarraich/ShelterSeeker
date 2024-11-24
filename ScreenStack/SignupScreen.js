@@ -73,7 +73,6 @@ const SignupScreen = ({navigation}) => {
             console.log("error raised",error)
           });
         } else {
-          // Set errors
           setErrors(Errors);
         }
     
@@ -263,7 +262,7 @@ const styles = StyleSheet.create
       marginTop: 10,
     },
     buttonText: {
-      color: 'white', // White text color
+      color: 'white', 
       fontSize: 20,
       fontWeight: 'bold',
       textAlign: 'center',

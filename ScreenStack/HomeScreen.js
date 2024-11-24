@@ -5,39 +5,38 @@ import {
    TextComponent
 } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { SearchBar } from "react-native-screens";
 import { useNavigation } from "@react-navigation/native";
 import axios from 'axios';
 import HomeCards from "../Components/HomeCards";
 
 const HomeScreen = ({ navigation }) => {
    const [location, setLocation] = useState([]);
-   const [Post, setPost] = useState([]); // State to manage 'Buy' or 'Rent' selection
+   const [Post, setPost] = useState([]); 
    const [types, setTypes] = useState(null);
    const [searchText, setSearchText] = useState("");
    const [filterData, setFilterData] = useState([]);
    const [loading, setLoading] = useState(true);
  
-   // Function to fetch post types from API
+  
    
 
    
-      const fetchTypes = async () => {
-         try {
-            const response = await axios.get('https://shelterseeker.projectflux.online/api/post'); // API URL for Buy/Rent options
-            setPost(response.data.Post); // assuming response contains { types: ['buy', 'rent'] }
-            console.log( response.data.Post);
-         } catch (error) {
-            console.log('Error fetching types:', error);
-         }
-      };
+   const fetchTypes = async () => {
+      try {
+         const response = await axios.get('https://shelterseeker.projectflux.online/api/post'); 
+         setPost(response.data.Post); 
+         console.log( response.data.Post);
+      } catch (error) {
+         console.log('Error fetching types:', error);
+      }
+   };
     
 
       useEffect(() => {
       fetchTypes();
      
    }, []);
-   // Replace this with your actual API call
+   
    const searchLocation = async (text) => {
       setSearchText(text);
    
@@ -48,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
             const result = await fetch(url);
             const data = await result.json();
             if (data && data.location) {
-               setLocation(data.location); // Update location state with fetched data
+               setLocation(data.location); 
                const filtered = data.location.filter((item) => {
                   const itemData = item.property_location
                      ? item.property_location.toUpperCase()
@@ -57,35 +56,27 @@ const HomeScreen = ({ navigation }) => {
                   return itemData.startsWith(textData);
                });
    
-               setFilterData(filtered); // Set filtered locations
+               setFilterData(filtered); 
             }
          } catch (error) {
             console.log("Error fetching locations:", error);
          }
       } else {
-         setLocation([]); // Clear location state if search text is empty
-         setFilterData([]); // Clear filtered locations
+         setLocation([]); 
+         setFilterData([]); 
       }
    };
    
    const handleLocationSelect = (selectedLocation) => {
-      // Handle location selection
       setSearchText(selectedLocation.property_location);
-      setFilterData([]); // Clear filtered locations after selection
+      setFilterData([]); 
    };
 
-   const renderLocationItem = ({ item }) => (
-      <TouchableOpacity
-         style={styles.location}
-         onPress={() => handleLocationSelect(item)}
-      >
-         <Text style={styles.locationtext}>{item.property_location}</Text>
-      </TouchableOpacity>
-   );
+   
 
    const handleTypeSelect = (selectedPost) => {
-      setTypes(selectedPost); // Set the selected type (Buy/Rent)
-      setSearchText(""); // Clear search text when type changes
+      setTypes(selectedPost); 
+      setSearchText(""); 
       setLocation([]);
       
    };

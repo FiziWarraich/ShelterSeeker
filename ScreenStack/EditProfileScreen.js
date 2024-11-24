@@ -13,9 +13,6 @@ const EditProfileScreen = () => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
-    // Retrieve the token for authentication and fetch user data
-   
-  
 
     useEffect(() => {
         const loadUserData = async () => {
@@ -58,7 +55,7 @@ const EditProfileScreen = () => {
                 await AsyncStorage.setItem('email', response.data.user.email);
             }
     
-            navigation.goBack(); // Navigate back to ProfileScreen
+            navigation.goBack(); 
     
         } catch (error) {
             console.error('Error updating profile:', error);

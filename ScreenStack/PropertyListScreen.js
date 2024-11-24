@@ -3,13 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, Linking, Ale
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Share from 'react-native-share';
 
 const PropertyListScreen = ({ route,navigation }) => {
-    const { post_id, location_id ,type} = route.params; // Extracting the post_id and location_id from the route params
+    const { post_id, location_id ,type} = route.params; 
     const [properties, setProperties] = useState([]);
     const number = '+923007406322'
     const message = "hello there!!"
@@ -18,77 +16,59 @@ const PropertyListScreen = ({ route,navigation }) => {
 
     const [loading, setLoading] = useState(true);
     const [favoriteProperties, setFavoriteProperties] = useState([]);
-    const [isProcessing, setIsProcessing] = useState(false);
     const fetchFilteredProperties = async () => {
-        setLoading(true); // Show loading indicator
+        setLoading(true); 
     
         try {
-            // Start with an empty object for params
             let params = {};
-    
-            // Add post_id to params if it exists
+
             if (post_id) {
                 params.post_id = post_id;
             }
     
-            // Add location_id to params if it exists
             if (location_id) {
                 params.location_id = location_id;
             }
-    
-            // Add other filters as necessary (e.g., type, category, etc.)
             
-    
-            // Make the API request with the current parameters
             const response = await axios.get('https://shelterseeker.projectflux.online/api/properties', {
-                params: params // Pass the filter parameters dynamically
+                params: params 
             });
     
-            // Check if the response contains properties
             if (response.data && Array.isArray(response.data.properties)) {
                 const filteredProperties = response.data.properties;
     
-                // Handle case where no properties match the current filter
                 if (filteredProperties.length === 0) {
                     Alert.alert('No properties match your criteria.');
-                    setProperties([]); // Clear properties if none found
+                    setProperties([]); 
                 } else {
-                    setProperties(filteredProperties); // Update state with fetched properties
+                    setProperties(filteredProperties); 
                 }
             } else {
                 console.warn('Unexpected response format:', response.data);
-                setProperties([]); // Clear properties if the response is invalid
+                setProperties([]); 
             }
         } catch (error) {
             console.log('Error fetching properties:', error);
-            setProperties([]); // Clear properties in case of error
+            setProperties([]);
         } finally {
-            setLoading(false); // Hide loading indicator
+            setLoading(false); 
         }
     };
-    
-    // Ensure fetchFilteredProperties is called whenever `post_id` or `location_id` changes
-   
-     // Dependency array to re-fetch when post_id or location_id change
-    // Dependenc
-
-     // Step 1: Token ko retrieve karne ka function
      const setAuthToken = async () => {
-        const token = await AsyncStorage.getItem('token'); // Replace 'token' with your actual token key
+        const token = await AsyncStorage.getItem('token'); 
         if (token) {
-            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Set token in headers
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`; 
         }
     };
 
-    // Fetch favorite properties on component mount
     const getFavorites = async () => {
         try {
-            const response = await axios.get('https://shelterseeker.projectflux.online/api/show'); // Get favorites from backend
-            const favoriteData = response.data.favorites || []; // Access 'favorites' array from response
-            setFavoriteProperties(favoriteData.map(item => item.id)); // Map through the 'favorites' array to extract IDs
+            const response = await axios.get('https://shelterseeker.projectflux.online/api/show'); 
+            const favoriteData = response.data.favorites || []; 
+            setFavoriteProperties(favoriteData.map(item => item.id)); 
         } catch (error) {
             if (error.response && error.response.status === 404) {
-                setFavoriteProperties([]); // No favorites found; set to empty list without showing error
+                setFavoriteProperties([]); 
             } else {
                 console.error('Error fetching favorites:', error);
             }
@@ -97,31 +77,24 @@ const PropertyListScreen = ({ route,navigation }) => {
     };
     
     
-
-    // Add property to favorites
     const addFavorite = async (propertyId) => {
         try {
-            // 1. Add the property to the favorites via API
+        
             await axios.post('https://shelterseeker.projectflux.online/api/add', { property_id: propertyId});
     
-            // 2. Update local state
             const updatedFavorites = [...favoriteProperties, propertyId];
             setFavoriteProperties(updatedFavorites);
     
-            // 3. Save updated favorites to AsyncStorage
             await AsyncStorage.setItem('favorites', JSON.stringify(updatedFavorites));
         } catch (error) {
             console.error('Error adding favorite:', error);
         }
     };
     
-
-    // Remove property from favorites
-   // Remove property from favorites
 const removeFavorite = async (propertyId) => {
     try {
         await axios.delete('https://shelterseeker.projectflux.online/api/delete', {
-            data: { property_id: propertyId } // Send property_id in the request body
+            data: { property_id: propertyId } 
         });
         setFavoriteProperties(favoriteProperties.filter(id => id !== propertyId));
     } catch (error) {
@@ -129,8 +102,6 @@ const removeFavorite = async (propertyId) => {
     }
 };
 
-
-    // Toggle favorite
     const toggleFavorite = (propertyId) => {
         if (favoriteProperties.includes(propertyId)) {
             removeFavorite(propertyId);
@@ -141,7 +112,7 @@ const removeFavorite = async (propertyId) => {
 
     useEffect(() => {
         fetchFilteredProperties();
-        setAuthToken(); // Set the auth token before fetching properties and favorites
+        setAuthToken(); 
         getFavorites();
     }, [post_id, location_id]);
     
@@ -204,7 +175,7 @@ For more details, please contact us!`;
                 showsVerticalScrollIndicator={false}
                 initialScrollIndex={ind}
                 renderItem={({ item }) => {
-                    const isFavorite = favoriteProperties.includes(item.id); // Check if property is favorite
+                    const isFavorite = favoriteProperties.includes(item.id); 
 
                     return (
                         <View
