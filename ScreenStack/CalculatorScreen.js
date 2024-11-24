@@ -16,11 +16,6 @@ const CalculatorScreen = ({ navigation, route }) => {
 
 
   function calculateLoan() {
-    // Log the current input values for debugging
-    console.log('Property Price:', propertyPrice);
-    console.log('Down Payment:', downPayment);
-    console.log('Loan Duration:', loanDuration);
-    console.log('Interest Rate:', interestRate);
   
     // Check if all fields have been filled and are valid
     if (
@@ -41,11 +36,6 @@ const CalculatorScreen = ({ navigation, route }) => {
     const duration = parseInt(loanDuration);
     const rate = parseFloat(interestRate);
   
-    // Debugging: Log parsed values to make sure they're correct
-    console.log("Parsed Price:", price);
-    console.log("Parsed Down Payment:", downPaymentAmount);
-    console.log("Parsed Duration:", duration);
-    console.log("Parsed Interest Rate:", rate);
   
     // Validate if inputs are numbers and greater than zero
     if (

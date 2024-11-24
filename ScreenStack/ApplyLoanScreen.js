@@ -1,6 +1,6 @@
 
 import React from "react";
-import { View, Text, StyleSheet, Image, FlatList,TouchableOpacity ,Linking} from "react-native";
+import { View, Text, Alert, StyleSheet, Image, FlatList,TouchableOpacity ,Linking} from "react-native";
 
 
 
