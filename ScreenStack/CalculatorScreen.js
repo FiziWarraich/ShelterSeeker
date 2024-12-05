@@ -16,12 +16,8 @@ const CalculatorScreen = ({ navigation, route }) => {
 
 
   function calculateLoan() {
-<<<<<<< HEAD
   
     // Check if all fields have been filled and are valid
-=======
-   
->>>>>>> ae85dbd0ff2c79ef4073fb45f752e82709cb4439
     if (
       propertyPrice.trim() === "" ||
       downPayment.trim() === "" ||
@@ -38,11 +34,6 @@ const CalculatorScreen = ({ navigation, route }) => {
     const duration = parseInt(loanDuration);
     const rate = parseFloat(interestRate);
   
-<<<<<<< HEAD
-  
-    // Validate if inputs are numbers and greater than zero
-=======
->>>>>>> ae85dbd0ff2c79ef4073fb45f752e82709cb4439
     if (
       isNaN(price) || price <= 0 ||
       isNaN(downPaymentAmount) || downPaymentAmount <= 0 ||
