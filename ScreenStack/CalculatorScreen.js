@@ -16,7 +16,8 @@ const CalculatorScreen = ({ navigation, route }) => {
 
 
   function calculateLoan() {
-   
+  
+    // Check if all fields have been filled and are valid
     if (
       propertyPrice.trim() === "" ||
       downPayment.trim() === "" ||
