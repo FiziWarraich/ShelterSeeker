@@ -59,7 +59,7 @@ const CalculatorScreen = ({ navigation, route }) => {
     setShowModal(true);
   }
   return (
-    <View style={styles.container}>
+    <View style={styles.container}  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={{ backgroundColor: '#191645', height: 70, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
         <MaterialCommunityIcons name="calculator" size={30} color={"#FFFFFF"} style={styles.calicon} />
         <Text style={styles.caltext}>Calculator</Text>
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'left',
     fontSize: 18,
-    left: '8%',
+    left: '2%',
     lineHeight: 18,
   },
   textInput: {
@@ -210,7 +210,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: 300,
     height: 50,
-    margin: 20,
+    marginBottom: 20,
+    marginTop:10,
     padding: 5,
   },
   button: {

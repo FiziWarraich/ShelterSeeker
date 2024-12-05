@@ -105,7 +105,7 @@ const HomeScreen = ({ navigation }) => {
     
 
    return (
-      <ScrollView>
+      <ScrollView  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
          <View style={styles.container}>
             <ImageBackground style={styles.image} source={require("../assests/home.jpeg")} />
             <Image style={styles.image1} source={require("../assests/logo.png")} />

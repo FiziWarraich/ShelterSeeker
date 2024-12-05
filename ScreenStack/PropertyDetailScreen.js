@@ -13,7 +13,7 @@ const PropertyDetailScreen = ({ route, navigation }) => {
   }, [images]);
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container}  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <FlatList
         data={images}
         horizontal

@@ -68,7 +68,7 @@ const EditProfileScreen = () => {
     
     
     return (
-        <View style={styles.container}>
+        <View style={styles.container}  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
             <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon name="arrow-back" size={24} color="white" />

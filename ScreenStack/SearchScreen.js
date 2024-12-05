@@ -80,7 +80,7 @@ const SearchScreen = ({navigation,route}) => {
   Object.values(types).flat();
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container}  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View style={styles.header}>
         <TouchableOpacity onPress={()=>navigation.goBack()}>
         <MaterialCommunityIcons name="keyboard-backspace" size={25}  style={styles.icon}/>

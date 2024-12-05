@@ -142,7 +142,7 @@ For more details, please contact us!`;
 
 
     return (
-        <View>
+        <View  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
             <View style={styles.line}>
                 <TouchableOpacity onPress={() => navigation.goBack()}>
                     <MaterialCommunityIcons name="less-than" size={18} style={styles.iconback} />

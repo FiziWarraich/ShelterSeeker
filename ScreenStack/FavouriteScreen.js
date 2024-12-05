@@ -122,7 +122,7 @@ For more details, please contact us!`;
         renderItem={({ item }) => { 
 
             return (
-                <View
+                <View  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                     style={{
                         width: '95%',
                         height: 190,

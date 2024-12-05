@@ -29,7 +29,7 @@ const ApplyLoanScreen = ({ navigation }) => {
 
  
   return (
-    <View >
+    <View  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View style={styles.header}>
           <Image style={{height:45,width:45,right:20,position:'absolute',top:15}} source={require('../assests/smartphone.png')}/>
           

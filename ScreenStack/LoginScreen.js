@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, Button, StyleSheet, TextInput, TouchableOpacity, Image,Alert,KeyboardAvoidingView,Keyboard,TouchableWithoutFeedback,ScrollView } from 'react-native'
+import { Text, View,  StyleSheet, TextInput, TouchableOpacity, Image,Alert,KeyboardAvoidingView,ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from "axios";

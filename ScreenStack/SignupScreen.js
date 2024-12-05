@@ -1,10 +1,9 @@
-import React, { useState,useEffect } from 'react';
-import { Text, View, Button, StyleSheet, TextInput, TouchableOpacity, Image ,Alert,ScrollView,KeyboardAvoidingView,} from 'react-native'
+import React, { useState, } from 'react';
+import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image ,Alert,ScrollView,KeyboardAvoidingView,} from 'react-native'
 import Icon from 'react-native-vector-icons/Feather';
-import { Header } from 'react-native/Libraries/NewAppScreen';
 import axios from "axios";
 import LinearGradient from 'react-native-linear-gradient';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const SignupScreen = ({navigation}) => {
   const [name, setName] = useState("");
@@ -12,8 +11,6 @@ const SignupScreen = ({navigation}) => {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [data, setData] = useState('');
-  const [response, setResponse] = useState(null);
 
 
   const togglePasswordVisibility = () => {
@@ -31,8 +28,8 @@ const SignupScreen = ({navigation}) => {
       {
         Errors.name="Name is required";
         valid=false;
-      }else if (!/^[A-Za-z ]+$/.test(name)) {
-        Errors.name = 'Invalid Name. Only letters and spaces are allowed.';
+      }else if  (!/^[A-Za-z]+( [A-Za-z]+)*$/.test(name)) {
+        Errors.name = 'Invalid Name.Only letters and center space are allowed.';
         valid = false;
     }
     if(!email)
@@ -224,8 +221,8 @@ const styles = StyleSheet.create
       textAlign: 'left',
       position: 'absolute',
       fontSize: 18,
-      left: '8%',
-      lineHeight: 18,
+      left: '8.5%',
+      lineHeight: 24,
     },
     textInput:
     {
@@ -245,7 +242,7 @@ const styles = StyleSheet.create
       color:'red',
       left:34,
       position:'absolute',
-      top:80,
+      top:75,
       width:300,
     },
     icon: {

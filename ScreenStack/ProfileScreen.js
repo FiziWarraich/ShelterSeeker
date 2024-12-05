@@ -48,7 +48,7 @@ const ProfileScreen = ({ navigation }) => {
     }
   };
   return (
-    <View style={styles.container}>
+    <View style={styles.container}  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.profile}>
       <Text style={styles.profileText}>Profile</Text>
       <MaterialCommunityIcons name="account" size={30} color={"#FFFFFF"} style={styles.profileicon}/>
